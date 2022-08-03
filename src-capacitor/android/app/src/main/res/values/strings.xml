@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Condominos</string>
+    <string name="title_activity_main">Condominos</string>
+    <string name="package_name">org.condominos.quasar.app</string>
+    <string name="custom_url_scheme">org.condominos.quasar.app</string>
+</resources>

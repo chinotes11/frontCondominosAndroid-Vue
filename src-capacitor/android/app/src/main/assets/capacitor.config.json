@@ -1,0 +1,10 @@
+{
+  "appId": "org.condominos.quasar.app",
+  "appName": "Condominos",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "server": {
+    "url": "http://10.154.2.184:8080"
+  }
+}
