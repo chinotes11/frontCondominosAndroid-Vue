@@ -15,7 +15,7 @@
         <q-card-section>
           <div class="q-pt-lg">
             <div class="col text-h6 ellipsis flex justify-center">
-              <h3 class="text-h2 text-uppercase q-my-none text-weight-regular">Iniciar</h3>
+              <h3 class="text-h4 text-uppercase q-my-none text-weight-regular">Iniciar</h3>
             </div>
           </div>
         </q-card-section>

@@ -16,7 +16,8 @@ const routes = [
       { path: '/condominos/perfil', component: () => import('pages/dashboard/Perfil'), meta: { requireLogin: true } }, 
       { path: '/condominos/pagos', component: () => import('pages/dashboard/Pagos'), meta: { requireLogin: true } }, 
       ///////////////////////////////////////////////////  
-      { path: '/condominos/admin', component: () => import('pages/admin/Index'), meta: { requireLogin: true } }
+      { path: '/condominos/admin', component: () => import('pages/admin/Index'), meta: { requireLogin: true } },
+      { path: '/condominos/calendariopagos', component: () => import('pages/admin/CalendarioPagos'), meta: { requireLogin: true } }
     ]
   },
   {

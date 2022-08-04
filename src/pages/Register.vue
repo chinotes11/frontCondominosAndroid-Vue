@@ -88,17 +88,6 @@
               </template>
             </q-input>
 
-             <div >
-              <q-img :src="imageSrc" />
-
-              <q-btn  style="width:100%"  color="teal" size="20px" @click="captureImage" >                                
-                    <div left class="text-subtitle2 text-left">
-                    <q-icon left name="photo_camera" />
-                        Tomar fotografía para conciliar pago
-                    </div>                                
-                </q-btn>
-            </div>
-
               <q-checkbox 
                 v-model="registro.conditions"
                 label="Acepto las condiciones y términos de uso" 
@@ -113,21 +102,16 @@
                 <q-btn label="Iniciar Sesión " type="button"  @click="toLogIn" color="primary"/>
               </div>
             </div>
-
-           
           </q-form>
         </q-card-section>
       </q-card>
     </div>
-    
-    
   </div>
 </template>
 
 <script>
 import { useQuasar } from 'quasar'
 import { mapActions } from 'vuex'
-import { Camera, CameraResultType, CameraSource, Photo, Prompt } from '@capacitor/camera'
 
 let $q
 
@@ -145,82 +129,61 @@ export default {
       },
       isPwd:true,
       isPwd2:true,
-      imageSrc:'',
-      
     }
   },
   methods: {
-      ...mapActions('auth', ['doRegistro']),
+    ...mapActions('auth', ['doRegistro']),
 
-      async onSubmit () {
-        $q.loading.show({ message: 'Espere mientras termina el proceso...' })   
+    async onSubmit () {
+      $q.loading.show({ message: 'Espere mientras termina el proceso...' })   
 
-        this.registro.errorInConditions = false
+      this.registro.errorInConditions = false
 
-        if ( !this.registro.conditions ) {
+      if ( !this.registro.conditions ) {
 
-            $q.notify({
-              message: 'Debe de aceptar los terminos y condiciones de uso.',
-              icon: 'las la-exclamation-circle',
-              position: 'top',
-            })
-            this.registro.errorInConditions = true
+          $q.notify({
+            message: 'Debe de aceptar los terminos y condiciones de uso.',
+            icon: 'las la-exclamation-circle',
+            position: 'top',
+          })
+          this.registro.errorInConditions = true
+          $q.loading.hide()
+          return
+        }
+        //admin@koolkat-pinturastermicas.com
+
+        this.doRegistro(this.registro).then((res) => {
+           
+           $q.notify({
+                  position: 'top',
+                  type: 'positive',
+                  message: 'Revise el correo registrado para activar su cuenta.'
+              })
+              
             $q.loading.hide()
-            return
-          }
-          //admin@koolkat-pinturastermicas.com
-
-          this.doRegistro(this.registro).then((res) => {
-            
-            $q.notify({
-                    position: 'top',
-                    type: 'positive',
-                    message: 'Revise el correo registrado para activar su cuenta.'
-                })
-                
+            const toPath = this.$route.query.to || '/login'
+            this.$router.push(toPath)
+          }).catch((err) => {  
+                              
+              $q.notify({
+                  type: 'negative',
+                  message: err.msg,
+                  position: 'top',
+              })
               $q.loading.hide()
-              const toPath = this.$route.query.to || '/login'
-              this.$router.push(toPath)
-            }).catch((err) => {  
-                                
-                $q.notify({
-                    type: 'negative',
-                    message: err.msg,
-                    position: 'top',
-                })
-                $q.loading.hide()
-            })
-          
-      },
+          })
+        
+    },
 
-      
-
-
-      async captureImage () {
-        //const {Camera} = plugins
-        const image = await Camera.getPhoto({
-          quality: 90,
-          allowEditing: true,
-          resultType: CameraResultType.Uri,
-          source: CameraSource.Prompt
-        })
-
-        // The result will vary on the value of the resultType option.
-        // CameraResultType.Uri - Get the result from image.webPath
-        // CameraResultType.Base64 - Get the result from image.base64String
-        // CameraResultType.DataUrl - Get the result from image.dataUrl
-        this.$imageSrc = image.webPath
-      },
-
-      onReset() {
-          this.registro = {
-            idasociado:'',
-            email: '',
-            password1: '',
-            password2: '',
-            conditions: false,
-            errorInConditions: false
-          }
+    onReset() {
+        this.registro = {
+          idasociado:'',
+          email: '',
+          password1: '',
+          password2: '',
+          conditions: false,
+          errorInConditions: false
+        }
       },
 
       isValidEmail( val ) {

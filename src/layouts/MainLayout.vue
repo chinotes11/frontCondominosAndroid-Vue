@@ -121,7 +121,7 @@ let lista=[]
 const linksListas = [
   {
       title: 'Inicio',
-      caption: 'Inicio',
+      caption: 'Datos Generales',
       icon: 'las la-home',
       link: '/condominos/dashboard',
       tipo:0,
@@ -139,16 +139,24 @@ const linksListas = [
   },
   {
       title: 'Administración',
-      caption: 'quasar.dev',
-      icon: 'school',
+      caption: '',
+      icon: 'admin_panel_settings',
       link: 'https://quasar.dev',
       tipo:1,
       level: 0,
       children: [{
-            title: 'Discord Chat Channel',
-            caption: 'chat.quasar.dev',
-            icon: 'chat',
-            link: 'https://chat.quasar.dev',
+            title: 'Panel',
+            caption: 'Panel Administrativo',
+            icon: 'dashboard_customize',
+            link: '/condominos/admin',
+            tipo:0,
+            level: 1,
+            children: []
+        }, {
+            title: 'Crear Calendario',
+            caption: 'Calendario de Pagos',
+            icon: 'date_range',
+            link: '/condominos/calendariopagos',
             tipo:0,
             level: 1,
             children: []
@@ -209,6 +217,7 @@ switch (rl) {
         break;
 
     case 1:
+      console.log('LISTAS')
         lista=linksListas
         break;            
 }

@@ -184,7 +184,7 @@
                 </div>
 
                 <div>
-                    <q-btn label="Actualizar Datos" type="submit" :disable="disabled" color="primary"/>
+                    <q-btn icon="save" label="Actualizar Datos" type="submit" :disable="disabled" color="primary"/>
                 </div>
                 </q-form>
             </q-card-section>
@@ -221,9 +221,10 @@ export default {
         let options = reactive({
             ops: null,
             })            
-        let payload = { "idconsorcio":sesion.idconsorcio}  
+         
 
-        const getCalles = async () => {        
+        const getCalles = async () => {  
+            let payload = { "idconsorcio":sesion.idconsorcio}       
             try {                
                 const json = await api.post('api/selects/1/1', payload);
                 const {data}=json.data
@@ -233,6 +234,7 @@ export default {
                 console.log(e)
             }
         }
+        
 
         onMounted( async() =>{
                 getCalles()
