@@ -119,11 +119,14 @@
                              -->
 
                                 <q-input
+                                    type="number"
+                                    step="any"
                                     filled
+                                    prefix="$"
                                     v-model="calendarioPago.monto"
                                     :modelValue="calendarioPago.monto" 
                                     label="Monto de pago mensual"
-                                    @update:modelValue="val => calendarioPago.monto = Number(val)"
+                                    @update:modelValue="val => calendarioPago.monto = val"
                                     :disable="disabled"
                                     lazy-rules   
                                     :rules="[ val => val && val > 0 || 'Este campo es obligatorio']"  
@@ -157,6 +160,8 @@ import { reactive, ref, computed, onMounted} from 'vue';
 import { api } from '../../boot/axios'
 import { meses } from '../../helpers/utils'
 const moment = require('moment');
+const options2 = { style: 'currency', currency: 'MXN' };
+const numberFormat2 = new Intl.NumberFormat('es-MX', options2);
 
 export default {
   name: 'CalendarioPagos',
@@ -213,9 +218,37 @@ export default {
         }
     }
 
-     const guardaCalendario = async ()=>{
+    const guardaCalendario = async ()=>{       
           try {
-            console.log(calendarioPago.value)          
+             $q.dialog({
+                title: 'Confirmación de Calendario',
+                message: `¿Esta usted seguro de cerrar el mes actual y crear el mes <b>${meses.find(mes => Number(mes.id)== Number(calendarioPago.value.mes)).value.toUpperCase()}</b> 
+                          del año <b>${calendarioPago.value.anio}</b> por el concepto de 
+                          <b>${options.ops.find(cat => Number(cat.id)== Number(calendarioPago.value.idcategoria)).categoria.toUpperCase()}</b> 
+                          por un monto de <b>${Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(calendarioPago.value.monto)}</b>  y dejarlo como mes activo?  `,
+                html: true,
+                ok: {
+                  push: true,
+                  color: 'positive',
+                  label: 'ACEPTAR',
+                  icon: 'check_circle'
+                  
+                },
+                cancel: {
+                  push: true,
+                  color: 'negative',
+                  label: 'CANCELAR',
+                  icon: 'cancel'
+                },
+                persistent: true
+              }).onOk(() => {
+                 crearCalendario()
+                 console.log(calendarioPago.value)
+              }).onCancel(() => {
+                // console.log('>>>> Cancel')
+              }).onDismiss(() => {
+                // console.log('I am triggered on both OK and Cancel')
+              })   
           } catch (error) {
               $q.notify({
                   position: 'top',
@@ -223,7 +256,30 @@ export default {
                   message: 'No se ha poddio guardar la información intentelo de nuevo.'
               }) 
           }          
+    }
+
+    const crearCalendario = async () => {                    
+      try {                
+          const json = await api.put('api/calendario/4', calendarioPago.value);
+          console.log(json)
+          const {msg}=json.data
+          console.log(msg)
+          $q.notify({
+            position: 'top',
+            type: 'positive',
+            message: msg
+        }) 
+          
+      } catch (e) {
+        //const {msg}=e.response.data
+        console.log(e)
+        $q.notify({
+            position: 'top',
+            type: 'negative',
+            message: `Este mes y año ya se ha creado en el calendario favor de verificar.`
+        }) 
       }
+    }
     //const { data } = await  = await store.dispatch('fetchActivityTypes')computed( () => store.getters['auth/getMe'][0]),
 
     onMounted( async() =>{
