@@ -140,7 +140,7 @@ const linksListas = [
   {
       title: 'Administración',
       caption: '',
-      icon: 'admin_panel_settings',
+      icon: 'gavel',
       link: 'https://quasar.dev',
       tipo:1,
       level: 0,
@@ -153,8 +153,8 @@ const linksListas = [
             level: 1,
             children: []
         }, {
-            title: 'Crear Calendario',
-            caption: 'Calendario de Pagos',
+            title: 'Calendario de Pago',
+            caption: 'Cuota mensual',
             icon: 'date_range',
             link: '/condominos/calendariopagos',
             tipo:0,
@@ -162,7 +162,7 @@ const linksListas = [
             children: []
         },]
   },
-  
+  /*
   {
       title: 'Discord Chat Channel',
       caption: 'chat.quasar.dev',
@@ -207,7 +207,7 @@ const linksListas = [
       tipo:0,
       level: 0,
       children: []
-  }
+  }*/
 ]
 
 switch (rl) {

@@ -134,10 +134,7 @@ const useDomicilios = () =>{
                 message: 'No se ha poddio guardar la información intentelo de nuevo.'
             }) 
             
-        }
-
-        
-        
+        }        
     }
 
     return {
@@ -147,8 +144,6 @@ const useDomicilios = () =>{
             me: computed( () => me),
             disabled: computed( () => disabled.value),
             guardarInfo,
-            
-            
             //calles: computed( async () => datos),
     }
 }

@@ -194,7 +194,7 @@
     </div>
   </q-page>
   <q-page-sticky position="top-right" :offset="[1, 1]">
-        <q-fab fab icon="arrow_back"  @click="$router.go(-1)" color="primary" />
+        <q-fab fab icon="arrow_back" padding="md"  @click="$router.go(-1)" color="primary" />
     </q-page-sticky>
 </template>
 

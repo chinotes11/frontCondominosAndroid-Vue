@@ -105,11 +105,11 @@ export default defineComponent({
 
     const router = useRouter()
 
-    console.log("ROUTER", router)
+    //console.log("ROUTER", router)
     return {
       navigateTo() {
 
-        console.log(props.link)
+        //console.log(props.link)
 
         props.link.startsWith('http')
           ? window.open( props.link, '_blank' )

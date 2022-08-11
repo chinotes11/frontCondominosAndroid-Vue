@@ -29,8 +29,4 @@ const meses = [
 ];
 
 
-  
-
-
-
 export { meses }

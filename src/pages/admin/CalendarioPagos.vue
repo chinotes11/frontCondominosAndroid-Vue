@@ -14,7 +14,7 @@
             </q-card>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <q-card>
+          <q-card rounded-borders>
             <q-card-section>
                 <q-form
                     class="q-gutter-md"
@@ -24,7 +24,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 q-gutter-md ">
                       <q-card class="my-card" flat bordered>   
                             <q-card-section class="q-gutter-md" > 
-                                <h6 class="text-h6 text-uppercase q-my-none text-weight-regular">Calendario de Pago</h6>     
+                                <h6 class="text-h6 text-uppercase q-my-none text-weight-regular">Calendario de Pago Mensual</h6>     
                                 <h6 class="text-body2 q-my-none text-weight-regular">En esta sección se va agenerar un nuevo mes de cobro para todos los domicilios, se hara el corte de pagos y cobros del mes que termina.</h6>                              
 
                                 <q-select
@@ -132,6 +132,35 @@
                                     :rules="[ val => val && val > 0 || 'Este campo es obligatorio']"  
                                 />
 
+                                <q-input
+                                    type="number"
+                                    :dense="false"
+                                    filled
+                                    v-model="calendarioPago.dialimite"
+                                    :modelValue="calendarioPago.dialimite" 
+                                    label="Dia limite para generar recargo"
+                                    @update:modelValue="val => calendarioPago.dialimite = Number(val)"
+                                    :disable="disabled" 
+                                    lazy-rules   
+                                    :rules="[
+                                      val => val >= 0 && val < 31 || 'El día debe ser entre 0 y 30, usando 0 (Cero) cuando no aplique recargo.'
+                                    ]"
+                                />
+
+                                <q-input
+                                    type="number"
+                                    step="any"
+                                    filled
+                                    prefix="$"
+                                    v-model="calendarioPago.recargo"
+                                    :modelValue="calendarioPago.recargo" 
+                                    label="Monto de recargo"
+                                    @update:modelValue="val => calendarioPago.recargo = Number(val)"
+                                    :disable="disabled" 
+                                />
+
+                                
+
                             </q-card-section>
                         </q-card>
                     </div>
@@ -148,14 +177,14 @@
     </div>
   </q-page>  
   <q-page-sticky position="top-right" :offset="[1, 1]">
-    <q-fab fab icon="arrow_back"  @click="$router.go(-1)" color="primary" />
+    <q-fab fab icon="arrow_back" padding="sm" @click="$router.go(-1)" color="primary" />
   </q-page-sticky>
 </template>
 
 <script>
 
 import { useStore } from 'vuex'
-import { useQuasar, date } from 'quasar'
+import { useQuasar, QSpinnerGears  } from 'quasar'
 import { reactive, ref, computed, onMounted} from 'vue';
 import { api } from '../../boot/axios'
 import { meses } from '../../helpers/utils'
@@ -173,10 +202,10 @@ export default {
     const $q = useQuasar() 
     $q.loading.show({ message: 'Espere mientras termina el proceso...' })
     const sesion = store.getters['auth/getMe'] 
-
     const anio = Number(moment(new Date(Date.now())).format("yyyy"))
     const mes = Number(moment(new Date(Date.now())).format("M"))
     const anios = [{"anio":anio-1}, {"anio":anio}, {"anio":anio+1}]
+
     let optAnio = reactive({
       ops: anios,
     })
@@ -194,14 +223,14 @@ export default {
     let calendarioPago = ref ({
           idconsorcio: sesion.idconsorcio,
           idcategoria: '',
-          mes: mes+1,
+          mes: mes,
           anio: anio,
           monto: '',
+          recargo: 0,
+          dialimite: 0
       })
     
-    let disabled = ref(false); 
-
-    
+    let disabled = ref(false);     
     
     const getCategorias = async () => {   
         let payload = { 
@@ -219,56 +248,88 @@ export default {
     }
 
     const guardaCalendario = async ()=>{       
-          try {
-             $q.dialog({
-                title: 'Confirmación de Calendario',
-                message: `¿Esta usted seguro de cerrar el mes actual y crear el mes <b>${meses.find(mes => Number(mes.id)== Number(calendarioPago.value.mes)).value.toUpperCase()}</b> 
-                          del año <b>${calendarioPago.value.anio}</b> por el concepto de 
-                          <b>${options.ops.find(cat => Number(cat.id)== Number(calendarioPago.value.idcategoria)).categoria.toUpperCase()}</b> 
-                          por un monto de <b>${Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(calendarioPago.value.monto)}</b>  y dejarlo como mes activo?  `,
-                html: true,
-                ok: {
-                  push: true,
-                  color: 'positive',
-                  label: 'ACEPTAR',
-                  icon: 'check_circle'
-                  
-                },
-                cancel: {
-                  push: true,
-                  color: 'negative',
-                  label: 'CANCELAR',
-                  icon: 'cancel'
-                },
-                persistent: true
-              }).onOk(() => {
-                 crearCalendario()
-                 console.log(calendarioPago.value)
-              }).onCancel(() => {
-                // console.log('>>>> Cancel')
-              }).onDismiss(() => {
-                // console.log('I am triggered on both OK and Cancel')
-              })   
-          } catch (error) {
-              $q.notify({
-                  position: 'top',
-                  type: 'negative',
-                  message: 'No se ha poddio guardar la información intentelo de nuevo.'
-              }) 
-          }          
+        try {
+            $q.dialog({
+              title: 'Confirmación de Calendario',
+              message: `¿Esta usted seguro de cerrar el mes actual y crear el mes <b>${meses.find(mes => Number(mes.id)== Number(calendarioPago.value.mes)).value.toUpperCase()}</b> 
+                        del año <b>${calendarioPago.value.anio}</b> por el concepto de 
+                        <b>${options.ops.find(cat => Number(cat.id)== Number(calendarioPago.value.idcategoria)).categoria.toUpperCase()}</b> 
+                        por un monto de <b>${Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(calendarioPago.value.monto)}</b> y dejarlo como mes activo?  `,
+              html: true,
+              ok: {
+                push: true,
+                color: 'positive',
+                label: 'ACEPTAR',
+                icon: 'check_circle'
+                
+              },
+              cancel: {
+                push: true,
+                color: 'negative',
+                label: 'CANCELAR',
+                icon: 'cancel'
+              },
+              persistent: true
+            }).onOk(() => {
+                crearCalendario()
+                console.log(calendarioPago.value)
+            }).onCancel(() => {
+              // console.log('>>>> Cancel')
+            }).onDismiss(() => {
+              // console.log('I am triggered on both OK and Cancel')
+            })   
+        } catch (error) {
+            $q.notify({
+                position: 'top',
+                type: 'negative',
+                message: 'No se ha poddio guardar la información intentelo de nuevo.'
+            }) 
+        }          
     }
 
     const crearCalendario = async () => {                    
-      try {                
+      try {       
+
+        const dialogProgreso = $q.dialog({
+          title: 'Generando calendario...',
+          dark: false,
+          message: `Espere un momento, este proceso puede tardar unos segundos, no refresque la pantalla ni cierre la aplicación`, 
+          html: true,
+          progress: {
+            spinner: QSpinnerGears,
+            color: 'primary'
+          },
+          persistent: true, // we want the user to not be able to close it
+          ok: false // we want the user to not be able to close it
+        })
+          
           const json = await api.put('api/calendario/4', calendarioPago.value);
           console.log(json)
           const {msg}=json.data
           console.log(msg)
+
+          dialogProgreso.update({
+            title: 'Exito',
+            message: `Se completo la generación del calendarió mensual de cuotas fijas para el mes de <b>${meses.find(mes => Number(mes.id)== Number(calendarioPago.value.mes)).value.toUpperCase()}</b> 
+                          del año <b>${calendarioPago.value.anio}</b> por el concepto de 
+                          <b>${options.ops.find(cat => Number(cat.id)== Number(calendarioPago.value.idcategoria)).categoria.toUpperCase()}</b> 
+                          por un monto de <b>${Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(calendarioPago.value.monto)}</b>. `,
+            html: true,
+            progress: false,
+            ok: true,
+            ok: {
+                push: true,
+                color: 'positive',
+                label: 'ACEPTAR',
+                icon: 'check_circle'
+                
+              },
+          })
           $q.notify({
-            position: 'top',
-            type: 'positive',
-            message: msg
-        }) 
+              position: 'top',
+              type: 'positive',
+              message: msg
+          }) 
           
       } catch (e) {
         //const {msg}=e.response.data
@@ -318,11 +379,9 @@ export default {
       }
 
     }
-
   }
 }
 </script>
 
 <style scoped>
-
 </style>
