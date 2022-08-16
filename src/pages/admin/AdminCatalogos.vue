@@ -24,32 +24,29 @@
                             indicator-color="primary"
                             align="justify"
                             narrow-indicator
-                            >
-                            <q-tab name="Domicilio" icon="home_work" label="Domicilios" />
-                            <q-tab name="usuarios" icon="person"  label="Usuarios"/>
+                        >
+                            <q-tab name="usrdom" icon="home_work" label="Usuario/Domicilio" />
                             <q-tab name="ingresos" icon="payments" label="Ingresos" />
                             <q-tab name="egresos" icon="monetization_on" label="Egresos" />
+                            <q-tab name="calles" icon="pin_drop" label="Calle/Torre" />
                         </q-tabs>
 
                         <q-separator />
 
                         <q-tab-panels v-model="tab" animated>
-                            <q-tab-panel name="Domicilio">
-                                <TablaIngresos></TablaIngresos>
-                            </q-tab-panel>
-
-                            <q-tab-panel name="usuarios">
-                                <div class="text-h6">Alarms</div>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            <q-tab-panel name="usrdom">
+                                <TablaDomicilios></TablaDomicilios>                                
                             </q-tab-panel>
 
                             <q-tab-panel name="ingresos">
-                                <div class="text-h6">Movies</div>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                               <TablaIngresos></TablaIngresos>
                             </q-tab-panel>
 
                             <q-tab-panel name="egresos">
                                 <TablaEgresos></TablaEgresos>
+                            </q-tab-panel>
+                            <q-tab-panel name="calles">
+                                <TablaCalles></TablaCalles>
                             </q-tab-panel>
                         </q-tab-panels>
                         
@@ -81,6 +78,8 @@ export default defineComponent({
     components: {
         TablaIngresos: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Ingresos.vue')),
         TablaEgresos: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Egresos.vue')),
+        TablaDomicilios: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Domicilios.vue')),
+        TablaCalles: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Calles.vue')),
     },
   
     setup() {
@@ -89,16 +88,13 @@ export default defineComponent({
         $q.loading.show({ message: 'Espere mientras termina el proceso...' })
         const sesion = store.getters['auth/getMe'] 
 
-
-        onMounted( async() =>{
-                
-                $q.loading.hide()
+        onMounted( async() =>{                
+            $q.loading.hide()
         })
 
         return {      
-            tab: ref('Domicilio'),
-            a: computed( () => a.value),  
-        
+            tab: ref('usrdom'),
+            a: computed( () => a.value),          
         }
 
     }

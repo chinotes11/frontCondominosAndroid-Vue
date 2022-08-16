@@ -9,19 +9,20 @@
                 row-key="categoria" 
                 binary-state-sort
                 :filter="filter"
+                :pagination="pagination"
               >
 
                 <template v-slot:top-right>
-                  <q-input v-if="show_filter" filled borderless dense debounce="300" v-model="filter" placeholder="Buscar">
+                  <q-input outlined borderless dense debounce="300" v-model="filter" placeholder="Buscar en Tabla">
                       <template v-slot:append>
                       <q-icon name="manage_search"/>
                       </template>
                   </q-input>
-                  <q-btn class="q-ml-sm" icon="search" @click="show_filter=!show_filter" flat/>
                 </template>
 
                 <template v-slot:top-left>
-                  <q-btn  color="primary" icon="add_circle" label="Agregar Nuevo Ingreso" @click="nuevoRow" no-caps></q-btn>                    
+                  <q-btn v-if="verListado" color="primary" icon="list" label="Mostrar Listado de Ingresos" @click="getCategorias" no-caps></q-btn>  
+                  <q-btn v-if="!verListado" color="primary" icon="add_circle" label="Agregar Nuevo Ingreso" @click="nuevoRow" no-caps></q-btn>                  
                   <div class="q-pa-sm q-gutter-sm">
                     <q-dialog v-model="show_dialog">
                       <q-card>
@@ -90,7 +91,7 @@ import { defineComponent, reactive, ref, computed, onMounted} from 'vue';
 import { api } from '../../../../boot/axios'
 
 export default defineComponent({
-  name: "TableBasic",
+  name: "egresos",
   setup() {
     const store = useStore()
     const $q = useQuasar() 
@@ -102,6 +103,7 @@ export default defineComponent({
     let datos = ref()
     let columnas =ref()
     let tituloDialg= ref(' Agregar nuevo ')
+    let verListado = ref(true)
 
     columnas.value = [
       {name: 'categoria', label: 'Concepto de Egreso', field: 'categoria', align: 'left', sortable: true  },
@@ -248,6 +250,7 @@ export default defineComponent({
             const json = await api.post('api/selects/1/6', payload);
             const {data}=json.data
             datos.value=data
+            verListado.value=!verListado.value
             console.log('DATOS - ',datos.value)
         } catch (e) {
              $q.notify({
@@ -259,7 +262,7 @@ export default defineComponent({
     }
     
     onMounted( async() =>{
-        getCategorias()
+        //getCategorias()
         $q.loading.hide()
     })
 
@@ -269,6 +272,7 @@ export default defineComponent({
         deleteItem,
         editItem,
         close,
+        getCategorias,
         show_dialog,
         editedIndex,
         editedItem: computed( () => editedItem.value),
@@ -279,7 +283,8 @@ export default defineComponent({
         getSelectedString: ()=> {},
         filter: ref(''),
         show_filter,
-        
+        verListado: computed( () => verListado.value), 
+        pagination: { rowsPerPage: 10 },        
     }
   }
 })

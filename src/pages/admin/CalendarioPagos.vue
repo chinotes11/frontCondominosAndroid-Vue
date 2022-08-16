@@ -28,7 +28,7 @@
                                 <h6 class="text-body2 q-my-none text-weight-regular">En esta sección se va agenerar un nuevo mes de cobro para todos los domicilios, se hara el corte de pagos y cobros del mes que termina.</h6>                              
 
                                 <q-select
-                                    filled
+                                    outlined
                                     v-model="calendarioPago.idcategoria"
                                     :modelValue="calendarioPago.idcategoria"
                                     emit-value
@@ -54,7 +54,7 @@
                                 </q-select>
 
                                 <q-select
-                                    filled
+                                    outlined
                                     v-model="calendarioPago.mes"
                                     :modelValue="calendarioPago.mes"
                                     emit-value
@@ -79,7 +79,7 @@
                                 </q-select>
 
                                 <q-select
-                                    filled
+                                    outlined
                                     v-model="calendarioPago.anio"
                                     :modelValue="calendarioPago.anio"
                                     emit-value
@@ -97,7 +97,7 @@
 
                                 
                                 <!-- 
-                                <q-input filled v-model="fecha" :rules="['date']" fill-mask="##/####" >
+                                <q-input outlined v-model="fecha" :rules="['date']" fill-mask="##/####" >
                                   <template v-slot:append>
                                     <q-icon name="event" class="cursor-pointer">
                                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -121,7 +121,7 @@
                                 <q-input
                                     type="number"
                                     step="any"
-                                    filled
+                                    outlined
                                     prefix="$"
                                     v-model="calendarioPago.monto"
                                     :modelValue="calendarioPago.monto" 
@@ -135,7 +135,7 @@
                                 <q-input
                                     type="number"
                                     :dense="false"
-                                    filled
+                                    outlined
                                     v-model="calendarioPago.dialimite"
                                     :modelValue="calendarioPago.dialimite" 
                                     label="Dia limite para generar recargo"
@@ -150,7 +150,7 @@
                                 <q-input
                                     type="number"
                                     step="any"
-                                    filled
+                                    outlined
                                     prefix="$"
                                     v-model="calendarioPago.recargo"
                                     :modelValue="calendarioPago.recargo" 

@@ -43,7 +43,7 @@
                                 <h6 class="text-h6 text-uppercase q-my-none text-weight-regular">Datos de Usuario</h6>
 
                                 <q-input
-                                    filled
+                                    outlined
                                     v-model="usuario.nombre" 
                                     :modelValue="usuario.nombre" 
                                     @update:modelValue="val => usuario.nombre = val.toUpperCase()"
@@ -54,7 +54,7 @@
                                 />
 
                                 <q-input
-                                    filled
+                                    outlined
                                     v-model="usuario.paterno"
                                     :modelValue="usuario.paterno" 
                                     label="Apellido Paterno"
@@ -65,7 +65,7 @@
                                 />
 
                                 <q-input
-                                    filled
+                                    outlined
                                     v-model="usuario.materno"
                                     label="Apellido Materno"
                                     @update:modelValue="val => usuario.materno = val.toUpperCase()"
@@ -73,7 +73,7 @@
                                 />
 
                                 <q-input
-                                    filled
+                                    outlined
                                     v-model="usuario.telefono"
                                     label="Telefono Celular Principal"
                                     lazy-rules   
@@ -84,7 +84,7 @@
                                 />
 
                                 <q-input
-                                    filled
+                                    outlined
                                     v-model="usuario.telefonod"
                                     label="Telefono Celular Alternativo"
                                     mask="## #### ####"
@@ -101,7 +101,7 @@
                                 <h6 class="text-h6 text-uppercase q-my-none text-weight-regular">Domicilio</h6>                                
 
                                 <q-select
-                                    filled
+                                    outlined
                                     v-model="domicilio.calle"
                                     :modelValue="domicilio.calle"
                                     emit-value
@@ -126,7 +126,7 @@
                                 </q-select>
 
                                 <q-input
-                                    filled
+                                    outlined
                                     v-model="domicilio.numeroext"
                                     :modelValue="domicilio.numeroext" 
                                     label="Numero Exterior"
@@ -138,7 +138,7 @@
                                 />
 
                                 <q-input
-                                    filled
+                                    outlined
                                     v-model="domicilio.numeroint"
                                     :modelValue="domicilio.numeroint" 
                                     label="Numero Interior (Si aplica)"
@@ -148,7 +148,7 @@
                                 />
 
                                 <q-input
-                                    filled
+                                    outlined
                                     v-model="domicilio.numeroalf"
                                     :modelValue="domicilio.numeroalf" 
                                     label="Numero Alfanumerico (Si aplica)"
@@ -157,7 +157,7 @@
                                 />
 
                                 <q-input
-                                    filled
+                                    outlined
                                     v-model="domicilio.piso"
                                     :modelValue="domicilio.piso" 
                                     label="Piso (Si aplica)"
@@ -167,7 +167,7 @@
                                 />
 
                                 <q-input
-                                    filled
+                                    outlined
                                     v-model="domicilio.cp"
                                     @update:modelValue="val => domicilio.cp = val.toUpperCase()"
                                     label="Código Postal"

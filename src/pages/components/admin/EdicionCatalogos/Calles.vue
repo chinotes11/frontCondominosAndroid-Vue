@@ -3,10 +3,10 @@
         <q-card-section class="q-pa-none">
             <div class="q-pa-sm q-gutter-sm">
               <q-table 
-                title="Ingresos" 
+                title="Egresos" 
                 :rows="datos" 
                 :columns="columnas" 
-                row-key="categoria" 
+                row-key="nombre" 
                 binary-state-sort
                 :filter="filter"
                 :pagination="pagination"
@@ -22,74 +22,55 @@
 
                 <template v-slot:top-left>
                   <q-btn v-if="verListado" color="primary" icon="list" label="Mostrar Listado de Ingresos" @click="getCategorias" no-caps></q-btn>  
-                  <q-btn v-if="!verListado" color="primary" icon="add_circle" label="Agregar Nuevo Ingreso" @click="nuevoRow" no-caps></q-btn>                    
+                  <q-btn v-if="!verListado" color="primary" icon="add_circle" label="Agregar Calle/Edificio/Torre/Privada" @click="nuevoRow" no-caps></q-btn>                  
                   <div class="q-pa-sm q-gutter-sm">
                     <q-dialog v-model="show_dialog">
                       <q-card>
                         <q-card-section>
-                          <div class="text-h6">{{tituloDialg}} nombre de tipo de egreso</div>
+                          <div class="text-h6">{{tituloDialg}} Calle/Edificio/Torre/Privada</div>
                         </q-card-section>
 
                         <q-card-section>
                           <div class="row">
-                            <div class="col-sm-12 col-xs-12 q-pa-sm q-gutter-sm">
-                              <q-input outlined v-model="editedItem.categoria" label="Nombre de Ingreso"></q-input>
-                            </div>
-                            <div class="col-sm-12 col-xs-12 q-pa-sm q-gutter-sm">
-                              <q-input outlined v-model="editedItem.tipo" label="Tipo" disable></q-input>
-                            </div>
-                            <div class=" col-sm-12 col-xs-12 q-pa-sm q-gutter-sm">
-                              <q-toggle
-                                    size="lg"
-                                    name="mensual"
-                                    label="Definir como ingreso de mensualidad o cuota ordinaria."
-                                    v-model="editedItem.mensual"
-                                    :true-value="Number(1)"
-                                    :false-value="Number(0)"
-                                    @click="validaMensual(editedItem)"
-
-                                  />
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                              <q-input outlined 
+                                v-model="editedItem.nombre" 
+                                :modelValue="editedItem.nombre" 
+                                label="Calle/Edificio/Torre/Privada"
+                                @update:modelValue="val => editedItem.nombre = val.toUpperCase()"
+                                lazy-rules   
+                                :rules="[ val => val && val.length > 0 || 'Este campo es obligatorio']"
+                              >
+                              </q-input>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                              <q-list>
-                                <q-item tag="label" v-ripple>
-                                  <q-item-section>
-                                    <q-item-label>Define si el concepto sigue activo.</q-item-label>
-                                  </q-item-section>
-                                  <q-item-section avatar>
-                                     <q-toggle
-                                      size="lg"
-                                      name="visible"
-                                      v-model="editedItem.visible"
-                                      :true-value="Number(1)"
-                                      :false-value="Number(0)"
-                                    />
-                                    <span v-if="editedItem.visible==1"> Activo</span>
-                                    <span v-else> Inactivo</span>
-                                  </q-item-section>
-                                </q-item>
-                              </q-list>
-                              
+                              <q-toggle
+                                    size="lg"
+                                    name="visible"
+                                    v-model="editedItem.visible"
+                                    :true-value="Number(1)"
+                                    :false-value="Number(0)"
+                                  />
+                                  <span v-if="editedItem.visible==1"> Activo</span>
+                                  <span v-else> Inactivo</span>
                             </div>
                           </div>
                         </q-card-section>
                         
                         <q-card-actions align="right">
                           <q-btn icon="cancel" label="Cerrar" color="primary" v-close-popup ></q-btn>
-                          <q-btn icon="check_circle"  color="blue" v-close-popup @click="addRow" > Guardar</q-btn>
+                          <q-btn icon="check_circle"  color="blue" v-close-popup @click="addRow" > GUARDAR</q-btn>
                         </q-card-actions>
                       </q-card>
                     </q-dialog>
                   </div>                  
                 </template>
 
+                
+
                 <template v-slot:body="props">
                     <q-tr :props="props">                      
-                      <q-td key="categoria" :props="props">{{ props.row.categoria }}</q-td>
-                      <q-td key="tipo" :props="props" class="text-uppercase">{{ props.row.tipo }}</q-td>
-                      <q-td key="mensual" :props="props">                        
-                        <span v-if="props.row.mensual==1"> <q-badge color="teal">Mensualidad</q-badge> </span>
-                      </q-td>
+                      <q-td key="nombre" :props="props">{{ props.row.nombre }}</q-td>
                       <q-td key="visible" :props="props">                        
                         <span v-if="props.row.visible==1"> <q-badge color="primary">Activo</q-badge> </span>
                         <span v-else><q-badge color="grey">Inactivo</q-badge> </span>
@@ -100,7 +81,6 @@
                       </q-td>
                     </q-tr>
                 </template>
-
               </q-table>
             </div>
         </q-card-section>
@@ -115,7 +95,7 @@ import { defineComponent, reactive, ref, computed, onMounted} from 'vue';
 import { api } from '../../../../boot/axios'
 
 export default defineComponent({
-  name: "ingresos",
+  name: "egresos",
   setup() {
     const store = useStore()
     const $q = useQuasar() 
@@ -126,13 +106,11 @@ export default defineComponent({
     let show_dialog = ref(false)
     let datos = ref()
     let columnas =ref()
-    let tituloDialg= ref(' Agregar nuevo ')
+    let tituloDialg= ref(' Agregar nueva ')
     let verListado = ref(true)
 
     columnas.value = [
-      {name: 'categoria', label: 'Concepto de Egreso', field: 'categoria', align: 'left', sortable: true  },
-      {name: 'tipo', label: 'Tipo de Concepto', field: 'tipo', sortable: true},
-      {name: 'mensual', label: 'Mensualidad', field: 'mensual', sortable: true},
+      {name: 'nombre', label: 'Calle/Edificio/Torre/Privada', field: 'nombre', align: 'left', sortable: true  },
       {name: 'visible', label: 'Activo', field: 'visible', sortable: true},
       {name: "actions", label: "Acciones", field: "actions"
       }
@@ -140,60 +118,53 @@ export default defineComponent({
 
     let editedItem = ref(  {            
         idconsorcio: sesion.idconsorcio,
-        categoria: '',
-        idctacontable: null,
-        tipo: 'ingresos',
-        visible: null,  
-        mensual:0    
+        nombre: '',
+        visible: null,      
     })
 
     let defaultItem = ref({        
         idconsorcio: sesion.idconsorcio,
-        categoria: '',
-        tipo: 'ingresos',
+        nombre: '',
         visible: 1,
         activo: 1,
-        mensual:0
     })
 
     const nuevoRow = ()=>{      
       editedItem.value = defaultItem.value
-      editedItem.value.mensual = 0
       show_dialog.value = true      
-    }
-    const validaMensual = (item)=>{  
-      editedItem.value.mensual = datos.value.find(o => o.mensual===1) ? 0 : 1;  
     }
 
     const addRow = async ()=>{
       try {
-        if (editedIndex.value > -1) {               
-          const egreso = await api.put(`api/updates/${editedItem.value.id}/6`, editedItem.value);        
-          await Promise.all([egreso]).then(function (res) {
+        if (editedIndex.value > -1) {          
+          const calle = await api.put(`api/updates/${editedItem.value.id}/1`, editedItem.value);        
+          await Promise.all([calle]).then(function (res) {
               const egr = res[0].data.data
               console.log(egr[0]);
               Object.assign(datos.value[editedIndex.value], egr[0]);                          
               $q.notify({
                   position: 'top',
                   type: 'positive',
-                  message: 'Se ha actualizado el egreso correctamente.'
+                  message: 'Se ha actualizado el registro correctamente.'
               })      
               close()  
           });
           
-        } else {   
-          const egreso = await api.put(`api/inserts/6`, editedItem.value);        
-          await Promise.all([egreso]).then(function (res) {
+        } else {
+          console.log(datos.value)       
+          const calle = await api.put(`api/inserts/1`, editedItem.value);        
+          await Promise.all([calle]).then(function (res) {
               const egr = res[0].data.data
               console.log(egr[0]);  
               datos.value.push(egr[0]);                       
               $q.notify({
                   position: 'top',
                   type: 'positive',
-                  message: 'Se ha creado un nuvo egreso correctamente.'
+                  message: 'Se ha creado el registro correctamente.'
               })    
               close()    
-          });          
+          });
+          
         }      
         
       } catch (error) {
@@ -209,7 +180,8 @@ export default defineComponent({
     const deleteItem = async (item)=>{
 
       try {
-        const index = datos.value.indexOf(item);       
+        const index = datos.value.indexOf(item);
+       
         $q.dialog({
             title: 'Confirmación de Borrado',
             message: `¿Esta usted seguro de borrar el registro, recuerde que la información vinculada a este desaparecerá, desea continuar con el proceso?`,
@@ -229,7 +201,7 @@ export default defineComponent({
             },
             persistent: true
           }).onOk( async() => {
-            const egreso = await api.put(`api/updates/${item.id}/6`, {activo:0,visible:0});        
+            const egreso = await api.put(`api/updates/${item.id}/1`, {activo:0,visible:0});        
             await Promise.all([egreso]).then(function (res) {
                 const egr = res[0].data.data
                 datos.value.splice(index, 1);                       
@@ -271,11 +243,10 @@ export default defineComponent({
    
     const getCategorias = async () => {   
         let payload = { 
-          "idconsorcio": sesion.idconsorcio,
-          "tipo": "ingresos"
+          "idconsorcio": sesion.idconsorcio
           }        
         try {                
-            const json = await api.post('api/selects/1/6', payload);
+            const json = await api.post('api/selects/1/1', payload);
             const {data}=json.data
             datos.value=data
             verListado.value=!verListado.value
@@ -300,7 +271,6 @@ export default defineComponent({
         deleteItem,
         editItem,
         close,
-        validaMensual,
         getCategorias,
         show_dialog,
         editedIndex,
@@ -309,10 +279,12 @@ export default defineComponent({
         columnas,
         datos: computed( () => datos.value),
         tituloDialg,
+        getSelectedString: ()=> {},
         filter: ref(''),
         show_filter,
-        verListado: computed( () => verListado.value),   
-        pagination: { rowsPerPage: 10 },  
+        verListado: computed( () => verListado.value), 
+        pagination: { rowsPerPage: 10 },
+        
     }
   }
 })
