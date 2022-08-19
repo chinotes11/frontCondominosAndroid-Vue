@@ -21,13 +21,16 @@
                 </template>
 
                 <template v-slot:top-left>
-                  <q-btn v-if="verListado" color="primary" icon="list" label="Mostrar Listado de Ingresos" @click="getCategorias" no-caps></q-btn>  
+                  <q-btn v-if="verListado" color="primary" icon="list" label="Mostrar Listado de Egresos" @click="getCategorias" no-caps></q-btn>  
                   <q-btn v-if="!verListado" color="primary" icon="add_circle" label="Agregar Nuevo Ingreso" @click="nuevoRow" no-caps></q-btn>                  
                   <div class="q-pa-sm q-gutter-sm">
                     <q-dialog v-model="show_dialog">
                       <q-card>
                         <q-card-section>
-                          <div class="text-h6">{{tituloDialg}} tipo de Egreso</div>
+                          <div>
+                            <span class="text-h6"> {{tituloDialg}} tipo de Egreso </span>
+                            <span class="float-right"><q-btn icon="cancel" color="primary" v-close-popup ></q-btn></span>
+                          </div>
                         </q-card-section>
 
                         <q-card-section>
@@ -41,12 +44,12 @@
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                               <q-toggle
                                     size="lg"
-                                    name="visible"
-                                    v-model="editedItem.visible"
+                                    name="activo"
+                                    v-model="editedItem.activo"
                                     :true-value="Number(1)"
                                     :false-value="Number(0)"
                                   />
-                                  <span v-if="editedItem.visible==1"> Activo</span>
+                                  <span v-if="editedItem.activo==1"> Activo</span>
                                   <span v-else> Inactivo</span>
                             </div>
                           </div>
@@ -67,8 +70,8 @@
                     <q-tr :props="props">                      
                       <q-td key="categoria" :props="props">{{ props.row.categoria }}</q-td>
                       <q-td key="tipo" :props="props" class="text-uppercase">{{ props.row.tipo }}</q-td>
-                      <q-td key="visible" :props="props">                        
-                        <span v-if="props.row.visible==1"> <q-badge color="primary">Activo</q-badge> </span>
+                      <q-td key="activo" :props="props">                        
+                        <span v-if="props.row.activo==1"> <q-badge color="primary">Activo</q-badge> </span>
                         <span v-else><q-badge color="grey">Inactivo</q-badge> </span>
                       </q-td>
                       <q-td key="actions" :props="props">
@@ -89,6 +92,7 @@ import { useStore } from 'vuex'
 import { useQuasar, QSpinnerGears  } from 'quasar'
 import { defineComponent, reactive, ref, computed, onMounted} from 'vue';
 import { api } from '../../../../boot/axios'
+const moment = require('moment')
 
 export default defineComponent({
   name: "egresos",
@@ -100,7 +104,7 @@ export default defineComponent({
     const sesion = store.getters['auth/getMe'] 
     let editedIndex = ref(-1)
     let show_dialog = ref(false)
-    let datos = ref()
+    let datos = ref([])
     let columnas =ref()
     let tituloDialg= ref(' Agregar nuevo ')
     let verListado = ref(true)
@@ -108,7 +112,7 @@ export default defineComponent({
     columnas.value = [
       {name: 'categoria', label: 'Concepto de Egreso', field: 'categoria', align: 'left', sortable: true  },
       {name: 'tipo', label: 'Tipo de Concepto', field: 'tipo', sortable: true},
-      {name: 'visible', label: 'Activo', field: 'visible', sortable: true},
+      {name: 'activo', label: 'Activo', field: 'activo', sortable: true},
       {name: "actions", label: "Acciones", field: "actions"
       }
     ];
@@ -118,7 +122,7 @@ export default defineComponent({
         categoria: '',
         idctacontable: null,
         tipo: 'egresos',
-        visible: null,      
+        activo: null,      
     })
 
     let defaultItem = ref({        
@@ -201,7 +205,8 @@ export default defineComponent({
             },
             persistent: true
           }).onOk( async() => {
-            const egreso = await api.put(`api/updates/${item.id}/6`, {activo:0,visible:0});        
+            const deletedAt = moment(new Date(Date.now())).format("yyyy-MM-DD HH:mm:ss")
+            const egreso = await api.put(`api/updates/${item.id}/6`, {activo:0,visible:0,deletedAt:deletedAt})      
             await Promise.all([egreso]).then(function (res) {
                 const egr = res[0].data.data
                 datos.value.splice(index, 1);                       
@@ -247,12 +252,13 @@ export default defineComponent({
           "tipo": "egresos"
           }        
         try {                
-            const json = await api.post('api/selects/1/6', payload);
+            const json = await api.post('api/selectsadmin/6', payload);
             const {data}=json.data
             datos.value=data
             verListado.value=!verListado.value
             console.log('DATOS - ',datos.value)
         } catch (e) {
+             verListado.value=!verListado.value
              $q.notify({
               position: 'top',
               type: 'negative',

@@ -61,25 +61,25 @@
               </q-card-actions>
             </q-card>
 
-            <q-card class="my-card bg-white text-gray-7 esqredondaInd">
+            <q-card class="my-card bg-white text-gray-7 esqredondaInd"  clickable v-ripple @click="go('documentos')">
               <q-card-section>
                 <div class="text-h6"><q-icon color="teal" size="30px" name="description" />  Documentos </div>
                 <div class="text-subtitle2">Sección para subir documentos como reglamento o acta constitutiva.</div>                
               </q-card-section>
               <q-separator  />
               <q-card-actions>
-                <q-btn class="full-width" outline color="primary" >Ir a Documentos </q-btn>
+                <q-btn class="full-width" outline color="primary" to="/condominos/documentos">Ir a Documentos </q-btn>
               </q-card-actions>
             </q-card>
 
-            <q-card class="my-card bg-white text-gray-7 esqredondaInd">
+            <q-card class="my-card bg-white text-gray-7 esqredondaInd"  clickable v-ripple @click="go('avisos')">
               <q-card-section>
                 <div class="text-h6"><q-icon color="teal" size="30px" name="notifications" />  Avisos </div>
                 <div class="text-subtitle2">Sección para crear los avisos del mes y volver a activarlos.</div>                
               </q-card-section>
               <q-separator  />
               <q-card-actions>
-                <q-btn class="full-width" outline color="primary" >Ir a Avisos </q-btn>
+                <q-btn class="full-width" outline color="primary" to="/condominos/avisos" >Ir a Avisos </q-btn>
               </q-card-actions>
             </q-card>
 

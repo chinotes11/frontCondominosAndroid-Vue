@@ -36,6 +36,8 @@ import 'quasar/dist/quasar.sass'
 
 import 'src/css/app.scss'
 
+import '@quasar/quasar-app-extension-qpdfviewer/src/component/pdfviewer.sass'
+
 
 import createQuasarApp from './app.js'
 import quasarUserOptions from './quasar-user-options.js'
@@ -122,7 +124,9 @@ createQuasarApp(createApp, quasarUserOptions)
       
       import(/* webpackMode: "eager" */ 'boot/axios'),
       
-      import(/* webpackMode: "eager" */ 'boot/capacitor')
+      import(/* webpackMode: "eager" */ 'boot/capacitor'),
+      
+      import(/* webpackMode: "eager" */ '@quasar/quasar-app-extension-qpdfviewer/src/boot/qpdfviewer.js')
       
     ]).then(bootFiles => {
       const boot = bootFiles

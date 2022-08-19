@@ -346,7 +346,7 @@ export default defineComponent({
           "tipo": "ingresos"
           }        
         try {                
-            const json = await api.post('api/selects/1/6', payload);
+            const json = await api.post('api/selectsadmin/6', payload);
             const {data}=json.data
             datos.value=data
             console.log(data)

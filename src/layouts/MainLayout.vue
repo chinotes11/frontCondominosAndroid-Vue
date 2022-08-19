@@ -160,6 +160,30 @@ const linksListas = [
             tipo:0,
             level: 1,
             children: []
+        }, {
+            title: 'Administrador de Catalogos',
+            caption: 'Crear o modificar, ingresos, calles, domicilios',
+            icon: 'folder_open',
+            link: '/condominos/admincatalogos',
+            tipo:0,
+            level: 1,
+            children: []
+        },{
+            title: 'Documentos',
+            caption: 'Documentos reglamento, acta constitutiva, etc.',
+            icon: 'description',
+            link: '/condominos/documentos',
+            tipo:0,
+            level: 1,
+            children: []
+        },{
+            title: 'Avisos',
+            caption: 'Crear los avisos del mes.',
+            icon: 'notifications',
+            link: '/condominos/avisos',
+            tipo:0,
+            level: 1,
+            children: []
         },]
   },
   /*

@@ -19,6 +19,8 @@ const routes = [
       { path: '/condominos/admin', component: () => import('pages/admin/Index'), meta: { requireLogin: true } },
       { path: '/condominos/calendariopagos', component: () => import('pages/admin/CalendarioPagos'), meta: { requireLogin: true } },
       { path: '/condominos/admincatalogos', component: () => import('pages/admin/AdminCatalogos'), meta: { requireLogin: true } },
+      { path: '/condominos/documentos', component: () => import('pages/admin/Documentos'), meta: { requireLogin: true } },
+      { path: '/condominos/avisos', component: () => import('pages/admin/Avisos'), meta: { requireLogin: true } },
     ]
   },
   ///////Pagina de Login

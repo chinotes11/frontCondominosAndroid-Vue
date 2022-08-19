@@ -71,7 +71,10 @@
                     <q-dialog v-model="show_dialog" :maximized="true">
                       <q-card>
                         <q-card-section>
-                          <div class="text-h6">{{tituloDialg}} domicilio</div>
+                          <div>
+                            <span class="text-h6"> {{tituloDialg}} domicilio</span>
+                            <span class="float-right"><q-btn icon="cancel" color="primary" v-close-popup ></q-btn></span>
+                          </div>
                         </q-card-section>
 
                         <q-card-section>
@@ -183,7 +186,10 @@
                     <q-dialog v-model="show_Usr" :maximized="true">
                       <q-card>
                         <q-card-section>
-                          <div class="text-h6">Datos Usuario</div>
+                          <div>
+                            <span class="text-h6"> Datos Usuario </span>
+                            <span class="float-right"><q-btn icon="cancel" color="primary" v-close-popup ></q-btn></span>
+                          </div>
                         </q-card-section>
                         <q-form 
                           class="q-gutter-md" 
@@ -381,7 +387,7 @@ export default defineComponent({
       bsqNom:null
     })
     let show_dialog = ref(false)
-    let datos = ref()
+    let datos = ref([])
 
     let columnas =ref()
     columnas.value = [
@@ -435,7 +441,7 @@ export default defineComponent({
           let payload = { 
             "iduser": item.id
           }            
-          const json = await api.post('api/selects/1/16', payload);
+          const json = await api.post('api/selectsadmin/16', payload);
           const {data}=json.data
           usuario.value=data[0]
           //
@@ -530,7 +536,7 @@ export default defineComponent({
             let payload = { 
               "id": item.idDomicilio
             }            
-            const json = await api.post('api/selects/1/12', payload)
+            const json = await api.post('api/selectsadmin/12', payload)
             const {data}=json.data
             domicilio.value=data[0]
           } else {
@@ -669,7 +675,7 @@ const addDom = async ()=>{
         verListado.value=!verListado.value  
        
         try {                
-            const json = await api.post('api/selects/1/20', payload);
+            const json = await api.post('api/selectsadmin/20', payload);
             const {data}=json.data
             datos.value=data
             buscar.value.bsqDom=null
@@ -701,7 +707,7 @@ const addDom = async ()=>{
     const getCalles = async () => {  
         let payload = { "idconsorcio":sesion.idconsorcio}       
         try {                
-            const json = await api.post('api/selects/1/1', payload);
+            const json = await api.post('api/selectsadmin/1', payload);
             const {data}=json.data
             arrVal = data    
             options.ops = data 
