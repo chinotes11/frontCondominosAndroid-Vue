@@ -12,16 +12,21 @@
       <q-btn flat color="white" icon="warning" label="Capturar" to="/condominos/Perfil"/>
     </template>
   </q-banner> 
+  <div class="q-pa-md q-gutter-md fondo1" >
+    <span class="cursor-pointer text-h6  text-uppercase text-white"> 
+       ¡ Hola {{ usuario.nombre }} !<br>
+    </span>
+    <span class="cursor-pointer text-body2 text-white">
+      Aquí esta tu resumen diario.
+    </span>
+  </div>
   
   <div class="fondo1">
     <q-card class="esqredonda">
       <q-card-section >  
           <q-item-label >
-            <span class="cursor-pointer text-body2 text-weight-bolder text-uppercase text-grey-8"> 
-              <q-icon color="primary" name="home_work" size="30px" /> Hola buen día  {{ usuario.nombre }} <br>
-            </span>
-            <span class="cursor-pointer text-body2 text-weight-medium text-uppercase text-grey-8"> 
-              {{ domicilio.calle }} #{{ domicilio.numeroext }}  {{ domicilio.numeroint }} <span v-if="domicilio.piso"> Piso {{ domicilio.piso }}</span>
+            <span class="cursor-pointer text-h6 text-uppercase text-grey-8"> 
+             <q-icon color="primary" name="home_work" size="35px" /> {{ domicilio.calle }} #{{ domicilio.numeroext }}  {{ domicilio.numeroint }} <span v-if="domicilio.piso"> Piso {{ domicilio.piso }}</span>
             </span>
           </q-item-label>      
       </q-card-section>
@@ -34,16 +39,32 @@
 
           <q-item clickable v-ripple to="/condominos/Pagos">
             <q-item-section avatar top>
-              <q-avatar  size="40px" icon="payments" color="teal-5" text-color="white" />
+              <q-avatar  size="70px" icon="payments" color="teal-5" text-color="white" />
             </q-item-section>
 
             <q-item-section>
-              <q-item-label lines="1" class="q-mt-xs text-weight-bold text-h5 text-uppercase">
-                <span class="cursor-pointer text-grey-8">$ 0.0</span>
+              <q-item-label class="q-mt-xs text-body2 flex flex-center  text-uppercase">
+                <span  v-if="monto=='0' || monto=='0.0'"  class="cursor-pointer teal-5 ">
+                    <q-icon color="teal-5" size="30px" name="radio_button_checked" /> 
+                     Por Pagar 
+                  </span>
+                  <span v-if="monto!='0' &&  monto!='0.0'"  class="cursor-pointer teal-5 ">
+                    <q-icon color="red" size="30px" name="radio_button_checked" /> 
+                     Por Pagar    
+                  </span>     
+                  <span v-if="monto!='0' &&  monto!='0.0'"  class="cursor-pointer teal-5 ">
+                    <span> &nbsp;&nbsp;({{adeudo.cuenta}}) Adeudos  </span>
+                </span>     
               </q-item-label>
-              <q-item-label class="q-mt-xs text-body2 text-weight-bold text-uppercase">
-                  <span class="cursor-pointer text-green "><q-icon color="text-green" size="30px" name="done_outline" /> Tu cuenta esta al corriente  </span>          
+              <q-item-label lines="1" class="q-mt-xs  flex flex-center ">
+                <span class="cursor-pointer text-h4 text-uppercase text-grey-8">{{monto}}</span>
+                
+                <!-- <span v-if="monto!='0' &&  monto!='0.0'"  class="cursor-pointer teal-5 ">
+                    <span> {{adeudo.cuenta}} Adeudos  </span>
+                </span>   -->
               </q-item-label>
+                  
+              
             </q-item-section>
 
             <q-item-section side>
@@ -54,19 +75,52 @@
           <q-separator spaced />
           <!--<q-item-label header  class="text-white text-weight-bold  bg-amber-9">HISTORIAL</q-item-label>-->
 
-          <q-item clickable v-ripple>
-            <q-item-section avatar top>
-              <q-avatar  size="40px" icon="checklist" color="amber-9" text-color="white" />
-            </q-item-section>
-
+          <q-item>
             <q-item-section>
-              <q-item-label class="q-mt-xs text-weight-bold text-h6 ">
-                <span class="text-grey-8">Revisar historico de pagos</span>
-              </q-item-label>
-            </q-item-section>
+              <div class="row ">
+                <div class="col-12 col-md-12">       
+                  <q-card>
+                    <div class="row q-pa-md flex content-center">
+                      <div class="col-4 col-md-4 flex content-center">                 
+                          <q-card-section class="q-pa-md row items-start q-gutter-md">                      
+                            <div class="q-mt-xs">
+                              <q-btn round padding="xl" color="white"   >
+                                <q-icon color="primary" name="history" size="35px" />
+                              </q-btn>
+                              <br>
+                              <span class="text-subtitle2 flex flex-center "> <br> Historial</span>                        
+                            </div>                      
+                          </q-card-section>
+                      </div>
+                      
+                      <div class="col-4 col-md-4 flex content-center">                 
+                          <q-card-section class="q-pa-md row items-start q-gutter-md">                      
+                            <div class="q-mt-xs">
+                              <q-btn round padding="xl" color="white"   >
+                                <q-icon  color="primary" name="local_police" size="35px" />
+                              </q-btn>
+                              <br>
+                              <span class="text-subtitle2 flex flex-center "> <br> Vigilancia</span>                        
+                            </div>                      
+                          </q-card-section>
+                      </div>
 
-            <q-item-section side>
-              <q-icon name="arrow_forward_ios" color="amber-9" />
+                      <div class="col-4 col-md-4 flex content-center">                 
+                          <q-card-section class="q-pa-md row items-start q-gutter-md">                      
+                            <div class="q-mt-xs">
+                              <q-btn round padding="xl" color="white"   >
+                                <q-icon color="primary" name="speaker_phone" size="35px" />
+                              </q-btn>
+                              <br>
+                              <span class="text-subtitle2 flex flex-center "> <br> Emergencias </span>                        
+                            </div>                      
+                          </q-card-section>
+                      </div>
+                    </div>
+                  </q-card>
+                </div>
+
+              </div>
             </q-item-section>
           </q-item>
 
@@ -86,10 +140,12 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import { defineComponent, ref } from 'vue';
+import { api } from '../../boot/axios'
 import { useQuasar } from 'quasar'
+const options2 = { style: 'currency', currency: 'MXN' };
+const numberFormat2 = new Intl.NumberFormat('es-MX', options2);
 
 export default {
   name: 'Index',
@@ -98,23 +154,47 @@ export default {
   // },
   //
   
-  setup(props) {    
+  setup() {    
     const store = useStore()
     const $q = useQuasar()
     $q.loading.show({ message: 'Espere mientras termina el proceso...' })
-    console.log(store)
-   
+    const sesion = store.getters['auth/getMe'] 
+    const dom = store.getters['auth/getDomicilio']
+    let adeudo = ref([])
+    let monto = ref('')
+
+    const adeudos = async () => {            
+      try {       
+
+          if(dom.calle){
+            let payload = { 
+              "idconsorcio":sesion.idconsorcio, 
+              "iddomicilio":dom.id,
+            }            
+            const json = await api.post('api/selects/1/21', payload);
+            const {data}=json.data           
+            adeudo.value = data[0]              
+            monto.value = numberFormat2.format(data[0].pagar)    
+          }
+          
+      } catch (e) {
+          console.log(e)
+      }
+    }  
+
     //const { data } = await  = await store.dispatch('fetchActivityTypes')computed( () => store.getters['auth/getMe'][0]),    
     onMounted( async() =>{
-        $q.loading.hide()
-        
+      adeudos()  
+      $q.loading.hide()   
     })
     
     return {
       inicia: computed( () => store.getters['auth/getMe']),
       usuario: computed( () => store.getters['auth/getUser']),
       domicilio: computed( () => store.getters['auth/getDomicilio']),
-      mailF:  () => store.dispatch('auth/getAlgo')
+      mailF:  () => store.dispatch('auth/getAlgo'),
+      adeudo,
+      monto,
     }
 
   }

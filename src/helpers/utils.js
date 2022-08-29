@@ -28,5 +28,29 @@ const meses = [
   {id:12,value:'Diciembre'}
 ];
 
+const seccionesAdm = [ 
+  {
+    id: 1,
+    name: 'Usuario / Domicilio',
+    descripcion: 'Edita información acerca de los usuarios y domicilios, con la posibilidad de dejarlos incativo o activos.',
+    icono: 'home_work',
+  }, {
+    id: 2,
+    name: 'Calle/Edificio/Torre/Privada',
+    descripcion: 'Agrega o modifica borra o inhabilita los nombres de la Calle/Edificio/Torre/Privada. ',
+    icono: 'pin_drop'
+  }, {
+    id: 3,
+    name: 'Tipos de Ingresos',
+    descripcion: 'Edita, crea, borra o inhabilita los tipos de ingresos para el cobro de cutoas.',
+    icono: 'payments'
+  }, {
+    id: 4,
+    name: 'Tipos de Egresos',
+    descripcion: 'Edita, crea, borra o inhabilita los tipos de egresos..',
+    icono: 'monetization_on'
+  } 
+]
 
-export { meses }
+
+export { meses, seccionesAdm }

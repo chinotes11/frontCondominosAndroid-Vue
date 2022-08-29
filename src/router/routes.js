@@ -17,6 +17,7 @@ const routes = [
       { path: '/condominos/pagos', component: () => import('pages/dashboard/Pagos'), meta: { requireLogin: true } }, 
       ///////////////////////////////////////////////////  Administración
       { path: '/condominos/admin', component: () => import('pages/admin/Index'), meta: { requireLogin: true } },
+      { path: '/condominos/contenedoradm/:id', component: () => import('pages/admin/ContenedorAdm'), meta: { requireLogin: true } },
       { path: '/condominos/calendariopagos', component: () => import('pages/admin/CalendarioPagos'), meta: { requireLogin: true } },
       { path: '/condominos/admincatalogos', component: () => import('pages/admin/AdminCatalogos'), meta: { requireLogin: true } },
       { path: '/condominos/documentos', component: () => import('pages/admin/Documentos'), meta: { requireLogin: true } },

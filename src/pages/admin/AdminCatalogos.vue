@@ -14,44 +14,25 @@
                         </q-card-section>
                     </q-card>
                 </q-card-section>
-                <q-card-section>
-                    <div>
-                        <q-tabs
-                            v-model="tab"
-                            dense
-                            class="teal"
-                            active-color="primary"
-                            indicator-color="primary"
-                            align="justify"
-                            narrow-indicator
-                        >
-                            <q-tab name="usrdom" icon="home_work" label="Usuario/Domicilio" />
-                            <q-tab name="ingresos" icon="payments" label="Ingresos" />
-                            <q-tab name="egresos" icon="monetization_on" label="Egresos" />
-                            <q-tab name="calles" icon="pin_drop" label="Calle/Torre" />
-                        </q-tabs>
+                <q-card-section class="q-pa-md  q-gutter-md">
+                    <q-list bordered>
+                        <q-item v-for="seccion in secciones" :key="seccion.id" class="q-my-sm" clickable v-ripple @click="go(seccion.id)">
+                            <q-item-section avatar>
+                              <q-icon :name="seccion.icono" color="primary" />                            
+                            </q-item-section>
+
+                            <q-item-section>
+                                <q-item-label class="text-subtitle1">{{ seccion.name }}</q-item-label>
+                                <q-item-label caption lines="1">{{ seccion.descripcion }}</q-item-label>
+                            </q-item-section>
+
+                            <q-item-section side>
+                                <q-icon name="send" color="primary" />
+                            </q-item-section>
+                        </q-item>
 
                         <q-separator />
-
-                        <q-tab-panels v-model="tab" animated>
-                            <q-tab-panel name="usrdom">
-                                <TablaDomicilios></TablaDomicilios>                                
-                            </q-tab-panel>
-
-                            <q-tab-panel name="ingresos">
-                               <TablaIngresos></TablaIngresos>
-                            </q-tab-panel>
-
-                            <q-tab-panel name="egresos">
-                                <TablaEgresos></TablaEgresos>
-                            </q-tab-panel>
-                            <q-tab-panel name="calles">
-                                <TablaCalles></TablaCalles>
-                            </q-tab-panel>
-                        </q-tab-panels>
-                        
-                    </div>
-
+                    </q-list>
                 </q-card-section>
             </q-card>     
         </div>
@@ -65,36 +46,37 @@
 
 
 import { useStore } from 'vuex'
-import { useQuasar, QSpinnerGears  } from 'quasar'
-import { reactive, ref, computed, onMounted} from 'vue';
-import { api } from '../../boot/axios'
-const moment = require('moment');
+import { useQuasar } from 'quasar'
+import { ref, computed, onMounted} from 'vue';
+import { useRouter } from 'vue-router'
+import { seccionesAdm } from '../../helpers/utils'
 const options2 = { style: 'currency', currency: 'MXN' };
-const numberFormat2 = new Intl.NumberFormat('es-MX', options2);
 
 import {defineComponent, defineAsyncComponent} from 'vue';
 export default defineComponent({
     name: 'CalendarioPagos',
-    components: {
-        TablaIngresos: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Ingresos.vue')),
-        TablaEgresos: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Egresos.vue')),
-        TablaDomicilios: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Domicilios.vue')),
-        TablaCalles: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Calles.vue')),
-    },
+    components: {},
   
     setup() {
         const store = useStore()
         const $q = useQuasar() 
+        const router = useRouter()
         $q.loading.show({ message: 'Espere mientras termina el proceso...' })
         const sesion = store.getters['auth/getMe'] 
+        let secciones = ref([])
 
         onMounted( async() =>{                
             $q.loading.hide()
+            secciones.value = seccionesAdm
         })
 
         return {      
             tab: ref('usrdom'),
-            a: computed( () => a.value),          
+            a: computed( () => a.value),     
+            secciones,    
+            go:  (ruta) => { 
+                router.push(`/condominos/contenedoradm/${ruta}`);
+            } 
         }
 
     }
