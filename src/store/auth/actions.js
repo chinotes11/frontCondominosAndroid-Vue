@@ -43,11 +43,6 @@ export const getMe = async ({ commit, state, dispatch }, token) => {
     commit('setMe',data[0] )         
   })
 
-  await api.post('api/selects/1/16', { iduser: state.token.id }).then(response => {    
-    const {data}=response.data
-    commit('setUser',data[0] )
-  })
-
   await api.post('api/selects/1/12', { iduser: state.token.id, idconsorcio:state.me.idconsorcio }).then(response => {    
     const {data}=response.data
     commit('setDomicilio',data[0] )    
@@ -56,6 +51,13 @@ export const getMe = async ({ commit, state, dispatch }, token) => {
     const data=[]
     commit('setDomicilio',data ) 
   })
+
+  await api.post('api/selects/1/16', { iduser: state.token.id }).then(response => {    
+    const {data}=response.data
+    commit('setUser',data[0] )
+  })
+
+  
 
 }
 

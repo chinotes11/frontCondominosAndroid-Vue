@@ -81,7 +81,8 @@
                 <div class="col-12 col-md-12">       
                   <q-card>
                     <div class="row q-pa-md flex content-center">
-                      <div class="col-4 col-md-4 flex content-center">                 
+                      
+                      <div class="col-4 col-md-4 col-sm-6 col-xs-6 flex content-center">                 
                           <q-card-section class="q-pa-md row items-start q-gutter-md">                      
                             <div class="q-mt-xs">
                               <q-btn round padding="xl" color="white"   >
@@ -93,7 +94,7 @@
                           </q-card-section>
                       </div>
                       
-                      <div class="col-4 col-md-4 flex content-center">                 
+                      <div class="col-4 col-md-4 col-sm-6 col-xs-6 flex content-center">                 
                           <q-card-section class="q-pa-md row items-start q-gutter-md">                      
                             <div class="q-mt-xs">
                               <q-btn round padding="xl" color="white"   >
@@ -105,7 +106,7 @@
                           </q-card-section>
                       </div>
 
-                      <div class="col-4 col-md-4 flex content-center">                 
+                      <div class="col-4 col-md-4 col-sm-6 col-xs-6 flex content-center">                 
                           <q-card-section class="q-pa-md row items-start q-gutter-md">                      
                             <div class="q-mt-xs">
                               <q-btn round padding="xl" color="white"   >
@@ -116,6 +117,7 @@
                             </div>                      
                           </q-card-section>
                       </div>
+
                     </div>
                   </q-card>
                 </div>
@@ -158,14 +160,12 @@ export default {
     const store = useStore()
     const $q = useQuasar()
     $q.loading.show({ message: 'Espere mientras termina el proceso...' })
-    const sesion = store.getters['auth/getMe'] 
-    const dom = store.getters['auth/getDomicilio']
+    let sesion, dom, usr
     let adeudo = ref([])
     let monto = ref('')
 
     const adeudos = async () => {            
-      try {       
-
+      try { 
           if(dom.calle){
             let payload = { 
               "idconsorcio":sesion.idconsorcio, 
@@ -184,6 +184,25 @@ export default {
 
     //const { data } = await  = await store.dispatch('fetchActivityTypes')computed( () => store.getters['auth/getMe'][0]),    
     onMounted( async() =>{
+      
+      sesion = store.getters['auth/getMe'] 
+      dom = store.getters['auth/getDomicilio']
+      usr = store.getters['auth/getUser']
+      // for (let i = 1; i <= 4; i++) {
+      //       setTimeout(function() { 
+      //         adeudos() 
+      //       }, 500);
+      //   } 
+      let i=0 
+      do {
+        i++;
+      }
+      while (!usr);
+      console.log(dom)
+      // if(!dom){
+      //   console.log('ENTRAAA')
+      // }
+      
       adeudos()  
       $q.loading.hide()   
     })
