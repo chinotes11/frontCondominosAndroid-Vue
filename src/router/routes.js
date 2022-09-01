@@ -15,6 +15,8 @@ const routes = [
       { path: '/condominos/flex', component: () => import('pages/dashboard/Flex'), meta: { requireLogin: true } }, 
       { path: '/condominos/perfil', component: () => import('pages/dashboard/Perfil'), meta: { requireLogin: true } }, 
       { path: '/condominos/pagos', component: () => import('pages/dashboard/Pagos'), meta: { requireLogin: true } }, 
+      { path: '/condominos/avisosu', component: () => import('pages/dashboard/AvisosU'), meta: { requireLogin: true } }, 
+      { path: '/condominos/contenedorusr/:tipo/:id', component: () => import('pages/dashboard/ContenedorUsr'), meta: { requireLogin: true } },
       ///////////////////////////////////////////////////  Administración
       { path: '/condominos/admin', component: () => import('pages/admin/Index'), meta: { requireLogin: true } },
       { path: '/condominos/contenedoradm/:id', component: () => import('pages/admin/ContenedorAdm'), meta: { requireLogin: true } },

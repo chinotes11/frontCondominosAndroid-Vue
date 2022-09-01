@@ -156,7 +156,7 @@
 
                                 <q-file v-if="!editedItem.ruta1" outlined clearable color="white" bg-color="white" class="vertical-bottom"
                                         standout bottom-slots v-model="archivo1" label="Adjuntar documento No. 1" size="35px"
-                                        counter @change="SubirArch(archivo1,1)" >
+                                        counter @change="SubirArch(archivo1,1)" accept=".jpg, .pdf, image/*">
                                     <template v-slot:prepend bg-color="white" >
                                     <q-icon name="attach_file" />
                                     </template>

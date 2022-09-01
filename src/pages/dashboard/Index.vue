@@ -81,8 +81,8 @@
                 <div class="col-12 col-md-12">       
                   <q-card>
                     <div class="row q-pa-md flex content-center">
-                      
-                      <div class="col-4 col-md-4 col-sm-6 col-xs-6 flex content-center">                 
+
+                      <div class="col-4 col-md-4 col-sm-4 col-xs-6 flex content-center">                 
                           <q-card-section class="q-pa-md row items-start q-gutter-md">                      
                             <div class="q-mt-xs">
                               <q-btn round padding="xl" color="white"   >
@@ -94,7 +94,7 @@
                           </q-card-section>
                       </div>
                       
-                      <div class="col-4 col-md-4 col-sm-6 col-xs-6 flex content-center">                 
+                      <div class="col-4 col-md-4 col-sm-4 col-xs-6 flex content-center">                 
                           <q-card-section class="q-pa-md row items-start q-gutter-md">                      
                             <div class="q-mt-xs">
                               <q-btn round padding="xl" color="white"   >
@@ -106,7 +106,7 @@
                           </q-card-section>
                       </div>
 
-                      <div class="col-4 col-md-4 col-sm-6 col-xs-6 flex content-center">                 
+                      <div class="col-4 col-md-4 col-sm-4 col-xs-6 flex content-center">                 
                           <q-card-section class="q-pa-md row items-start q-gutter-md">                      
                             <div class="q-mt-xs">
                               <q-btn round padding="xl" color="white"   >

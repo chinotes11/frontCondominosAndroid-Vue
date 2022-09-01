@@ -16,10 +16,10 @@
                 </q-card-section>
             </q-card>
             <div>                         
-                <div v-if="idC===1"  name="usrdom">
-                    <TablaDomicilios></TablaDomicilios>                                
+                <div v-if="idC===1"  name="avisos">
+                    <VistaAvisos></VistaAvisos>                                
                 </div>
-                <div  v-if="idC===2" name="calles">
+                <!-- <div  v-if="idC===2" name="calles">
                     <TablaCalles></TablaCalles>
                 </div>
                 <div  v-if="idC===3" name="ingresos">
@@ -27,7 +27,7 @@
                 </div>
                 <div  v-if="idC===4" name="egresos">
                     <TablaEgresos></TablaEgresos>
-                </div>                            
+                </div>                             -->
             </div>
                  
         </div>
@@ -44,17 +44,16 @@ import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { ref, computed, onMounted} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { seccionesAdm } from '../../helpers/utils'
-const options2 = { style: 'currency', currency: 'MXN' }
+import { seccionesUsr } from '../../helpers/utils'
 
 import {defineComponent, defineAsyncComponent} from 'vue';
 export default defineComponent({
-    name: 'ContenedorAdm',
+    name: 'ContenedorUsr',
     components: {
-        TablaIngresos: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Ingresos.vue')),
-        TablaEgresos: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Egresos.vue')),
-        TablaDomicilios: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Domicilios.vue')),
-        TablaCalles: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Calles.vue')),
+        VistaAvisos: defineAsyncComponent(() => import('../components/dashboard/VerAvisosUsr/verAvisosUsr.vue')),
+        // TablaEgresos: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Egresos.vue')),
+        // TablaDomicilios: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Domicilios.vue')),
+        // TablaCalles: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Calles.vue')),
     },
   
     setup() {
@@ -64,12 +63,12 @@ export default defineComponent({
         const route = useRoute()
         $q.loading.show({ message: 'Espere mientras termina el proceso...' })
         const sesion = store.getters['auth/getMe'] 
-        const idC = Number(route.params.id)
+        const idC = Number(route.params.tipo)
         let seccion = ref([])        
 
         onMounted( async() =>{                
             $q.loading.hide()
-            seccion.value = seccionesAdm.find(sec => Number(sec.id)== idC); 
+            seccion.value = seccionesUsr.find(sec => Number(sec.id)== idC); 
             console.log(seccion)
         })
 

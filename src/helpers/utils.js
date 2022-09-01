@@ -52,5 +52,28 @@ const seccionesAdm = [
   } 
 ]
 
+const seccionesUsr = [ 
+  {
+    id: 1,
+    name: 'Avisos Mensuales',
+    descripcion: '',
+    icono: 'notifications',
+  }, {
+    id: 2,
+    name: 'Calle/Edificio/Torre/Privada',
+    descripcion: 'Agrega o modifica borra o inhabilita los nombres de la Calle/Edificio/Torre/Privada. ',
+    icono: 'pin_drop'
+  }, {
+    id: 3,
+    name: 'Tipos de Ingresos',
+    descripcion: 'Edita, crea, borra o inhabilita los tipos de ingresos para el cobro de cutoas.',
+    icono: 'payments'
+  }, {
+    id: 4,
+    name: 'Tipos de Egresos',
+    descripcion: 'Edita, crea, borra o inhabilita los tipos de egresos..',
+    icono: 'monetization_on'
+  } 
+]
 
-export { meses, seccionesAdm }
+export { meses, seccionesAdm, seccionesUsr }

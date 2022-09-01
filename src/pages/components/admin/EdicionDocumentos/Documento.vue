@@ -133,7 +133,7 @@
                             <div class="col-sm-6 col-xs-12 q-pa-sm ">
                                 <q-file v-if="!editedItem.ruta5" outlined clearable color="white" bg-color="white" class="vertical-bottom"
                                         standout bottom-slots v-model="archivo5" label="Adjuntar documento No. 5" size="35px"
-                                        counter @change="SubirArch(archivo5,5)" >
+                                        counter @change="SubirArch(archivo5,5)" accept=".jpg, .pdf, image/*" >
                                     <template v-slot:prepend bg-color="white" >
                                     <q-icon name="attach_file" />
                                     </template>
@@ -486,11 +486,6 @@ export default defineComponent({
       }        
     }
 
-    const encode = (data) => {
-      let buf = Buffer.from(data);
-      let base64 = buf.toString('base64');
-      return base64
-    }
     
     const verDoc= async (arr,doc,id) => { 
 

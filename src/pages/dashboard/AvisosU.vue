@@ -8,8 +8,8 @@
                         <q-card-section horizontal>        
                             <q-card-section class="q-pt-xs">
                                 <div class="text-h6"> 
-                                <q-icon color="primary" size="30px" name="folder_open" />  Administrador de Catalogos  </div>     
-                                <div class="text-subtitle2">Sección para crear o modificar, usuarios, domicilios, catalogo de ingresos ó egresos etc.</div>                            
+                                <q-icon color="primary" size="30px" name="notifications" />  Avisos Mensuales  </div>     
+                                <div class="text-subtitle2">Sección donde se muestra el listado de avisos o notificaciones del mes.</div>                            
                             </q-card-section>
                         </q-card-section>
                     </q-card>
@@ -18,16 +18,17 @@
                     <q-list bordered>
                         <q-item v-for="seccion in secciones" :key="seccion.id" class="q-my-sm" clickable v-ripple @click="go(seccion.id)">
                             <q-item-section avatar>
-                              <q-icon :name="seccion.icono" color="primary" />                            
+                              <q-icon name="notifications_active" color="teal" />                            
                             </q-item-section>
 
                             <q-item-section>
-                                <q-item-label class="text-subtitle1">{{ seccion.name }}</q-item-label>
-                                <q-item-label caption lines="1">{{ seccion.descripcion }}</q-item-label>
+                                <q-item-label class="text-subtitle1"> 
+                                    <span class="text-subtitle1 text-weight-bold ">{{ seccion.titulo }}</span>
+                                </q-item-label> 
                             </q-item-section>
-
+                            
                             <q-item-section side>
-                                <q-icon name="send" color="primary" />
+                                <q-icon name="send" color="teal" />
                             </q-item-section>
                         </q-item>
 
@@ -49,12 +50,11 @@ import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { ref, computed, onMounted} from 'vue';
 import { useRouter } from 'vue-router'
-import { seccionesAdm } from '../../helpers/utils'
-const options2 = { style: 'currency', currency: 'MXN' };
+import { api } from '../../boot/axios'
 
-import {defineComponent, defineAsyncComponent} from 'vue';
+import {defineComponent} from 'vue';
 export default defineComponent({
-    name: 'AdminCatalogos',
+    name: 'AvisosU',
     components: {},
   
     setup() {
@@ -65,17 +65,31 @@ export default defineComponent({
         const sesion = store.getters['auth/getMe'] 
         let secciones = ref([])
 
+        const avisos = async () => {            
+            try { 
+                let payload = { 
+                    "idconsorcio":sesion.idconsorcio
+                }            
+                const json = await api.post('api/selects/1/2', payload);
+                const {data} = json.data  
+                secciones.value = data  
+                console.log('DATOS - ',data )
+            } catch (e) {
+                console.log(e)
+            }
+        }  
+
         onMounted( async() =>{                
             $q.loading.hide()
-            secciones.value = seccionesAdm
+            avisos()
+            
         })
 
         return {      
-            tab: ref('usrdom'),
             a: computed( () => a.value),     
             secciones,    
             go:  (ruta) => { 
-                router.push(`/condominos/contenedoradm/${ruta}`);
+                router.push(`/condominos/contenedorusr/1/${ruta}`);
             } 
         }
 

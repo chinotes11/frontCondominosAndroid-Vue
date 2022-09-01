@@ -129,6 +129,15 @@ const linksListas = [
       children: []
   },
   {
+      title: 'Avisos',
+      caption: 'Listado de avisos mensuales',
+      icon: 'notifications',
+      link: '/condominos/avisosu',
+      tipo:0,
+      level: 0,
+      children: []
+  },
+  {
       title: 'Flex Layout',
       caption: 'Estilos con Flex',
       icon: 'las la-layer-group',
