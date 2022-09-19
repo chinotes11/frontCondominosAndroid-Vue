@@ -31,8 +31,9 @@ const useDomicilios = () =>{
             cp: '',
             editable: 1,
         })  
-         
-        //disabled=false;
+        
+        disabled.value=false
+
     } else {
         if(!domicilia.id){
             domicilios = ref ({

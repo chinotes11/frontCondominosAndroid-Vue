@@ -22,7 +22,8 @@
 
                 <template v-slot:top-left>
                   <q-btn v-if="verListado" color="primary" icon="list" label="Mostrar Listado de Ingresos" @click="getCategorias" no-caps></q-btn>  
-                  <q-btn v-if="!verListado" color="primary" icon="add_circle" label="Agregar Nuevo Ingreso" @click="nuevoRow" no-caps></q-btn>                    
+                  <q-btn v-if="!verListado" color="primary" icon="add_circle" label="Agregar Nuevo Ingreso" @click="nuevoRow" no-caps></q-btn>   
+                                   
                   <div class="q-pa-sm q-gutter-sm">
                     <q-dialog v-model="show_dialog">
                       <q-card>
@@ -201,6 +202,7 @@ export default defineComponent({
         }      
         
       } catch (error) {
+          close() 
           $q.notify({
               position: 'top',
               type: 'negative',

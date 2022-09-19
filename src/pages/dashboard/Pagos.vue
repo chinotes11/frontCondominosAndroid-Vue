@@ -65,7 +65,7 @@
 
                         <q-step
                             :name="2"
-                            title="Seleccionar de adeudos a pagar."
+                            title="Seleccionar adeudos a pagar."
                             icon="create_new_folder"
                             :done="step > 2"
                         >
@@ -79,24 +79,22 @@
                                 v-model:selected="selected"
                                 :filter="filter"
                                 :pagination="pagination"
-                                :fullscreen="inFullscreen"
-                                
+                                :fullscreen="inFullscreen"                                
                             >
 
                                 <template v-slot:top-right>
-                                <q-input outlined borderless dense debounce="300" v-model="filter" placeholder="Buscar en Tabla">
-                                    <template v-slot:append>
-                                    <q-icon name="manage_search"/>
-                                    </template>
-                                </q-input><br>
+                                    <q-input outlined borderless dense debounce="300" v-model="filter" placeholder="Buscar en Tabla">
+                                        <template v-slot:append>
+                                        <q-icon name="manage_search"/>
+                                        </template>
+                                    </q-input><br>
 
-                                <q-btn
-                                    color="primary"
-                                    :icon="inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                                    @click="full()"
-                                    class="q-ml-md"
-                                > Pantalla</q-btn>
-                                
+                                    <q-btn
+                                        color="primary"
+                                        :icon="inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+                                        @click="full()"
+                                        class="q-ml-md"
+                                    > Pantalla</q-btn>                                
                                 </template>
 
                                 <template v-slot:body="props">
@@ -110,10 +108,10 @@
                                         </q-td>                        
                                         <q-td key="describe" :props="props" class="text-subtitle2">
                                             <span class="text-subtitle2" > {{props.row.categoria}} {{ arrmeses.find(mes => Number(mes.id)== Number(props.row.mes)).value.toUpperCase() }} {{props.row.anio}}</span><br>
-                                            <span class="text-subtitle2" v-if="props.row.montodepago==0 || props.row.aprobado==0"> <q-badge color="negative"> CON ADEUDO</q-badge> </span>
+                                            <span class="text-subtitle2" v-if="props.row.aprobado==0"> <q-badge color="negative"> CON ADEUDO</q-badge> </span>
                                             <span class="text-subtitle2" v-if="props.row.aprobado==1 "> <q-badge color="orange">PENDIENTE DE VALIDAR</q-badge> </span>  
                                             <span class="text-subtitle2" v-if="props.row.aprobado==2"> <q-badge color="purple">ADEUDO PARCIAL</q-badge> </span>    
-                                            <span class="text-subtitle2" v-if="props.row.aprobado==3"> <q-badge color="negative">RECHAZADO</q-badge> </span>   
+                                            <span class="text-subtitle2" v-if="props.row.aprobado==3"> <q-badge color="negative"><q-icon name="warning"></q-icon> RECHAZADO</q-badge> </span>   
                                             <span class="text-subtitle2" v-if="props.row.aprobado==4"> <q-badge color="positive">PAGADO</q-badge> </span>
                                         </q-td>                                
                                         <q-td key="montoapagar" :props="props" class="text-subtitle2">{{ numberFormat2.format(props.row.montoapagar)  }}</q-td>
@@ -131,7 +129,7 @@
                             </q-table>
 
                             <q-stepper-navigation>
-                            <q-btn @click="step = 3" color="primary" label="Comprobar pago" />
+                            <q-btn @click="step = 3" color="primary" label="Comprobantes de pago" />
                             <q-btn flat @click="step = 1" color="primary" label="Regresar" class="q-ml-sm" />
                             </q-stepper-navigation>
                         </q-step>
@@ -242,7 +240,6 @@
                                     <span v-if="selecteds.zpago==0" class="text-weight-bold text-negative"> * No debe tener un monto en cero (0).</span> 
                                     <span v-if="!selecteds.ruta1" class="text-weight-bold text-negative"> * Debe agregar un comprobante de pago.</span> 
                                     <span v-if="selecteds.zpago > selecteds.pagar" class="text-weight-bold text-negative"> * El monto a pagar es mayor al monto del adeudo.</span> 
-
                                 </q-item-section>                                    
                             </q-item>
                         </q-list> 

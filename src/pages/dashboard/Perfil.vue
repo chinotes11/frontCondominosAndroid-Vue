@@ -7,7 +7,7 @@
             <q-card-section horizontal> 
        
                 <q-card-section class="q-pt-xs">
-                <div class="text-overline">Asociado ID - {{asociado.id}}</div>
+                <div class="text-overline">Condominio Asociado ID - {{asociado.id}}</div>
                 <div class="text-h5 q-mt-sm q-mb-xs">{{asociado.nombre}}</div>
                 <div class="text-caption text-grey">
                     {{asociado.calle}} #{{asociado.numero}}, COL. {{asociado.colonia}}, C.P. {{asociado.cp}}, MUNICIPIO {{asociado.municipio}}

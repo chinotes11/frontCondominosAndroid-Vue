@@ -287,10 +287,8 @@ export default {
         }          
     }
 
-    const crearCalendario = async () => {                    
-      try {       
-
-        const dialogProgreso = $q.dialog({
+    const crearCalendario = async () => { 
+      const dialogProgreso = $q.dialog({
           title: 'Generando calendario...',
           dark: false,
           message: `Espere un momento, este proceso puede tardar unos segundos, no refresque la pantalla ni cierre la aplicación`, 
@@ -301,8 +299,9 @@ export default {
           },
           persistent: true, // we want the user to not be able to close it
           ok: false // we want the user to not be able to close it
-        })
-          
+        })                   
+      try {       
+
           const json = await api.put('api/calendario/4', calendarioPago.value);
           console.log(json)
           const {msg}=json.data
@@ -333,6 +332,7 @@ export default {
           
       } catch (e) {
         //const {msg}=e.response.data
+        dialogProgreso.hide()
         console.log(e)
         $q.notify({
             position: 'top',

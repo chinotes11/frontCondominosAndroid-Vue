@@ -17,7 +17,8 @@
     "axios": "^0.22.0",
     "core-js": "^3.6.5",
     "moment": "^2.29.4",
-    "quasar": "^2.0.0",
+    "quasar": "^2.0.0",  
+    "vue-google-charts": "^1.1.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

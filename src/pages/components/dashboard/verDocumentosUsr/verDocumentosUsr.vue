@@ -19,6 +19,7 @@
                             ['fullscreen'],
                         ]"
                         />
+                        
                     <div class="q-pa-md">
                         <q-card class="row items-start" >
                             <q-card-section class="my-card" v-for="doc in docs" :key="doc.id">
@@ -104,7 +105,7 @@ export default defineComponent({
                 "idconsorcio": sesion.idconsorcio,
                 "id": idC
             }                 
-            const json = await api.post('api/selects/1/2', payload);
+            const json = await api.post('api/selects/1/11', payload);
             const {data}=json.data
             Promise.all(data).then((responses) => {
                 datos.value=responses[0]
@@ -114,7 +115,7 @@ export default defineComponent({
                     if(av.ruta1){
                         const nombreCortado = av.ruta1.split('.');
                         const extension = nombreCortado[ nombreCortado.length - 1 ];
-                        const json1 = await api.get(`api/uploads/2/${av.id}/documentos/ruta1`,{responseType: 'blob' });
+                        const json1 = await api.get(`api/uploads/11/${av.id}/documentos/ruta1`,{responseType: 'blob' });
                         const {data}=json1
                         if ( !extensionesImg.includes( extension ) ) {
                             docs.value.push({doc:"img/pdf.png", tipo:"Doc", id:av.id, pdf:urlCreator.createObjectURL(new Blob([data], { type: `application/${extension}` }))})
@@ -125,7 +126,7 @@ export default defineComponent({
                     if(av.ruta2){
                         const nombreCortado = av.ruta2.split('.');
                         const extension = nombreCortado[ nombreCortado.length - 1 ];
-                        const json2 = await api.get(`api/uploads/2/${av.id}/documentos/ruta2`,{responseType: 'blob' });
+                        const json2 = await api.get(`api/uploads/11/${av.id}/documentos/ruta2`,{responseType: 'blob' });
                         const {data}=json2
                         if ( !extensionesImg.includes( extension ) ) {
                             docs.value.push({doc:"img/pdf.png", tipo:"Doc", id:av.id, pdf:urlCreator.createObjectURL(new Blob([data], { type: `application/${extension}` }))})
@@ -136,7 +137,7 @@ export default defineComponent({
                     if(av.ruta3){
                         const nombreCortado = av.ruta3.split('.');
                         const extension = nombreCortado[ nombreCortado.length - 1 ];
-                        const json3 = await api.get(`api/uploads/2/${av.id}/documentos/ruta3`,{responseType: 'blob' });
+                        const json3 = await api.get(`api/uploads/11/${av.id}/documentos/ruta3`,{responseType: 'blob' });
                         const {data}=json3
                         if ( !extensionesImg.includes( extension ) ) {
                             docs.value.push({doc:"img/pdf.png", tipo:"Doc", id:av.id, pdf:urlCreator.createObjectURL(new Blob([data], { type: `application/${extension}` }))})
@@ -147,7 +148,7 @@ export default defineComponent({
                     if(av.ruta4){
                         const nombreCortado = av.ruta4.split('.');
                         const extension = nombreCortado[ nombreCortado.length - 1 ];
-                        const json4 = await api.get(`api/uploads/2/${av.id}/documentos/ruta4`,{responseType: 'blob' });
+                        const json4 = await api.get(`api/uploads/11/${av.id}/documentos/ruta4`,{responseType: 'blob' });
                         const {data}=json4
                         if ( !extensionesImg.includes( extension ) ) {
                             docs.value.push({doc:"img/pdf.png", tipo:"Doc", id:av.id, pdf:urlCreator.createObjectURL(new Blob([data], { type: `application/${extension}` }))})
@@ -158,7 +159,7 @@ export default defineComponent({
                     if(av.ruta5){
                         const nombreCortado = av.ruta5.split('.');
                         const extension = nombreCortado[ nombreCortado.length - 1 ];
-                        const json5 = await api.get(`api/uploads/2/${av.id}/documentos/ruta5`,{responseType: 'blob' });
+                        const json5 = await api.get(`api/uploads/11/${av.id}/documentos/ruta5`,{responseType: 'blob' });
                         const {data}=json5
                         if ( !extensionesImg.includes( extension ) ) {
                             docs.value.push({doc:"img/pdf.png", tipo:"Doc", id:av.id, pdf:urlCreator.createObjectURL(new Blob([data], { type: `application/${extension}` }))})

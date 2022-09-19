@@ -1,5 +1,16 @@
 <template>
-  <q-banner dense inline-actions v-if="!usuario.nombre && !usuario.telefono || [domicilio].length===0 " class="text-white bg-orange ">
+  
+  <div class="q-pa-md q-gutter-md fondo1" >
+    <span class="cursor-pointer text-h6  text-uppercase text-white"> 
+       ¡ Hola {{ usuario.nombre }} !<br>
+    </span>
+    <span class="cursor-pointer text-body2 text-white">
+      Aquí esta tu resumen diario.
+    </span>
+  </div>
+  
+  <div class="fondo1">
+    <q-banner dense inline-actions v-if="!usuario.nombre && !usuario.telefono || [domicilio].length===0 " class="text-white bg-orange ">
       Debe capturar los DATOS DE USUARIO y DOMICILIO para visulizar su información mensual. 
     <template v-slot:action>
       <q-btn flat color="white" icon="warning" label="Capturar" to="/condominos/Perfil" />
@@ -12,16 +23,6 @@
       <q-btn flat color="white" icon="warning" label="Capturar" to="/condominos/Perfil"/>
     </template>
   </q-banner> 
-  <div class="q-pa-md q-gutter-md fondo1" >
-    <span class="cursor-pointer text-h6  text-uppercase text-white"> 
-       ¡ Hola {{ usuario.nombre }} !<br>
-    </span>
-    <span class="cursor-pointer text-body2 text-white">
-      Aquí esta tu resumen diario.
-    </span>
-  </div>
-  
-  <div class="fondo1">
     <q-card class="esqredonda">
       <q-card-section >  
           <q-item-label >
@@ -80,40 +81,16 @@
               <div class="row ">
                 <div class="col-12 col-md-12">       
                   <q-card>
-                    <div class="row q-pa-md flex content-center">
+                    <div class="row q-pa-md flex content-center" >
 
-                      <div class="col-4 col-md-4 col-sm-4 col-xs-6 flex content-center">                 
+                      <div v-for="menu in menuUsuario" :key="menu.id" class="col-4 col-md-4 col-sm-4 col-xs-6 flex content-center">                 
                           <q-card-section class="q-pa-md row items-start q-gutter-md">                      
                             <div class="q-mt-xs">
-                              <q-btn round padding="xl" color="white"   >
-                                <q-icon color="primary" name="history" size="35px" />
+                              <q-btn round padding="xl" color="white" @click="go(menu.url)"  >
+                                <q-icon color="primary" :name="menu.icono" size="35px" />
                               </q-btn>
                               <br>
-                              <span class="text-subtitle2 flex flex-center "> <br> Historial</span>                        
-                            </div>                      
-                          </q-card-section>
-                      </div>
-                      
-                      <div class="col-4 col-md-4 col-sm-4 col-xs-6 flex content-center">                 
-                          <q-card-section class="q-pa-md row items-start q-gutter-md">                      
-                            <div class="q-mt-xs">
-                              <q-btn round padding="xl" color="white"   >
-                                <q-icon  color="primary" name="local_police" size="35px" />
-                              </q-btn>
-                              <br>
-                              <span class="text-subtitle2 flex flex-center "> <br> Vigilancia</span>                        
-                            </div>                      
-                          </q-card-section>
-                      </div>
-
-                      <div class="col-4 col-md-4 col-sm-4 col-xs-6 flex content-center">                 
-                          <q-card-section class="q-pa-md row items-start q-gutter-md">                      
-                            <div class="q-mt-xs">
-                              <q-btn round padding="xl" color="white"   >
-                                <q-icon color="primary" name="speaker_phone" size="35px" />
-                              </q-btn>
-                              <br>
-                              <span class="text-subtitle2 flex flex-center "> <br> Emergencias </span>                        
+                              <span class="text-subtitle2 flex flex-center "> <br> {{menu.name}}</span>                        
                             </div>                      
                           </q-card-section>
                       </div>
@@ -146,6 +123,9 @@ import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { api } from '../../boot/axios'
 import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
+import { menuUsr } from '../../helpers/utils'
+
 const options2 = { style: 'currency', currency: 'MXN' };
 const numberFormat2 = new Intl.NumberFormat('es-MX', options2);
 
@@ -158,11 +138,13 @@ export default {
   
   setup() {    
     const store = useStore()
+    const router = useRouter()
     const $q = useQuasar()
     $q.loading.show({ message: 'Espere mientras termina el proceso...' })
     let sesion, dom, usr
     let adeudo = ref([])
     let monto = ref('')
+    let menuUsuario = ref(null)
 
     const adeudos = async () => {            
       try { 
@@ -183,27 +165,19 @@ export default {
     }  
 
     //const { data } = await  = await store.dispatch('fetchActivityTypes')computed( () => store.getters['auth/getMe'][0]),    
-    onMounted( async() =>{
-      
+    onMounted( async() =>{      
       sesion = store.getters['auth/getMe'] 
       dom = store.getters['auth/getDomicilio']
       usr = store.getters['auth/getUser']
-      // for (let i = 1; i <= 4; i++) {
-      //       setTimeout(function() { 
-      //         adeudos() 
-      //       }, 500);
-      //   } 
       let i=0 
       do {
         i++;
       }
       while (!usr);
-      console.log(dom)
-      // if(!dom){
-      //   console.log('ENTRAAA')
-      // }
-      
-      adeudos()  
+
+      (!dom) ? setTimeout(()=> { adeudos() }, 80): adeudos()
+
+      menuUsuario.value = menuUsr
       $q.loading.hide()   
     })
     
@@ -214,6 +188,10 @@ export default {
       mailF:  () => store.dispatch('auth/getAlgo'),
       adeudo,
       monto,
+      menuUsuario,
+      go:  (ruta) => { 
+          router.push(`/condominos/${ruta}`);
+      } 
     }
 
   }

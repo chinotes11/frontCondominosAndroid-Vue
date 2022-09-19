@@ -137,6 +137,15 @@ const linksListas = [
       level: 0,
       children: []
   },
+   {
+      title: 'Documentos',
+      caption: 'Listado de documentos permanentes',
+      icon: 'description',
+      link: '/condominos/documentosu',
+      tipo:0,
+      level: 0,
+      children: []
+  },
   {
       title: 'Flex Layout',
       caption: 'Estilos con Flex',
@@ -162,6 +171,22 @@ const linksListas = [
             level: 1,
             children: []
         }, {
+            title: ' Conciliar Pagos o Ingresos',
+            caption: 'Conciliación de pagos o ingresos.',
+            icon: 'payments',
+            link: '/condominos/ingresosconciliar',
+            tipo:0,
+            level: 1,
+            children: []
+        }, {
+            title: ' Gastos o Egresos',
+            caption: 'Gestión de gastos del condominio.',
+            icon: 'monetization_on',
+            link: '/condominos/egresosgastos',
+            tipo:0,
+            level: 1,
+            children: []
+        },{
             title: 'Calendario de Pago',
             caption: 'Cuota mensual',
             icon: 'date_range',
@@ -204,43 +229,7 @@ const linksListas = [
       tipo:0,
       level: 0,
       children: []
-  },
-  {
-      title: 'Forum',
-      caption: 'forum.quasar.dev',
-      icon: 'record_voice_over',
-      link: 'https://forum.quasar.dev',
-      tipo:0,
-      level: 0,
-      children: []
-  },
-  {
-      title: 'Twitter',
-      caption: '@quasarframework',
-      icon: 'rss_feed',
-      link: 'https://twitter.quasar.dev',
-      tipo:0,
-      level: 0,
-      children: []
-  },
-  {
-      title: 'Facebook',
-      caption: '@QuasarFramework',
-      icon: 'public',
-      link: 'https://facebook.quasar.dev',
-      tipo:0,
-      level: 0,
-      children: []
-  },
-  {
-      title: 'Quasar Awesome',
-      caption: 'Community Quasar projects',
-      icon: 'favorite',
-      link: 'https://awesome.quasar.dev',
-      tipo:0,
-      level: 0,
-      children: []
-  }*/
+  },*/
 ]
 
 switch (rl) {
@@ -280,6 +269,10 @@ export default defineComponent({
     logout () {
       this.$store.dispatch('auth/signOut')
       this.$router.push('/')
+      setTimeout(() => {
+        window.location.reload();
+      }, 100)
+      
     }
   },
   computed: {

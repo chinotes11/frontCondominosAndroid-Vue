@@ -568,7 +568,7 @@ const addDom = async ()=>{
               $q.notify({
                   position: 'top',
                   type: 'positive',
-                  message: 'Se ha actualizado el egreso correctamente.'
+                  message: 'Se ha actualizado el registro correctamente.'
               })      
               close()  
           });
@@ -587,7 +587,7 @@ const addDom = async ()=>{
               $q.notify({
                   position: 'top',
                   type: 'positive',
-                  message: 'Se ha creado un nuvo egreso correctamente.'
+                  message: 'Se ha creado un nuevo registro correctamente.'
               })    
               close()    
           });          
@@ -633,7 +633,7 @@ const addDom = async ()=>{
                 $q.notify({
                     position: 'top',
                     type: 'positive',
-                    message: 'Se ha actualizado el egreso correctamente.'
+                    message: 'Se ha actualizado el registro correctamente.'
                 })      
                 close()  
             });

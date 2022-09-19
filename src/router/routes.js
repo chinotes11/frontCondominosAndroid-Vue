@@ -16,6 +16,8 @@ const routes = [
       { path: '/condominos/perfil', component: () => import('pages/dashboard/Perfil'), meta: { requireLogin: true } }, 
       { path: '/condominos/pagos', component: () => import('pages/dashboard/Pagos'), meta: { requireLogin: true } }, 
       { path: '/condominos/avisosu', component: () => import('pages/dashboard/AvisosU'), meta: { requireLogin: true } }, 
+      { path: '/condominos/documentosu', component: () => import('pages/dashboard/DocumentosU'), meta: { requireLogin: true } }, 
+      { path: '/condominos/emergencias', component: () => import('pages/dashboard/Emergencias'), meta: { requireLogin: true } }, 
       { path: '/condominos/contenedorusr/:tipo/:id', component: () => import('pages/dashboard/ContenedorUsr'), meta: { requireLogin: true } },
       ///////////////////////////////////////////////////  Administración
       { path: '/condominos/admin', component: () => import('pages/admin/Index'), meta: { requireLogin: true } },
@@ -24,6 +26,9 @@ const routes = [
       { path: '/condominos/admincatalogos', component: () => import('pages/admin/AdminCatalogos'), meta: { requireLogin: true } },
       { path: '/condominos/documentos', component: () => import('pages/admin/Documentos'), meta: { requireLogin: true } },
       { path: '/condominos/avisos', component: () => import('pages/admin/Avisos'), meta: { requireLogin: true } },
+      { path: '/condominos/ingresosconciliar', component: () => import('pages/admin/IngresosConciliar'), meta: { requireLogin: true } },
+      { path: '/condominos/egresosgastos', component: () => import('pages/admin/EgresosGastos'), meta: { requireLogin: true } },
+      
     ]
   },
   ///////Pagina de Login

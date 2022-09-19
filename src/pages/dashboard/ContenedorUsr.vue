@@ -19,9 +19,10 @@
                 <div v-if="idC===1"  name="avisos">
                     <VistaAvisos></VistaAvisos>                                
                 </div>
-                <!-- <div  v-if="idC===2" name="calles">
-                    <TablaCalles></TablaCalles>
+                <div  v-if="idC===2" name="documentos">
+                    <VistaDocmentos></VistaDocmentos>
                 </div>
+                <!-- 
                 <div  v-if="idC===3" name="ingresos">
                     <TablaIngresos></TablaIngresos>
                 </div>
@@ -51,9 +52,7 @@ export default defineComponent({
     name: 'ContenedorUsr',
     components: {
         VistaAvisos: defineAsyncComponent(() => import('../components/dashboard/VerAvisosUsr/verAvisosUsr.vue')),
-        // TablaEgresos: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Egresos.vue')),
-        // TablaDomicilios: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Domicilios.vue')),
-        // TablaCalles: defineAsyncComponent(() => import('../components/admin/EdicionCatalogos/Calles.vue')),
+        VistaDocmentos: defineAsyncComponent(() => import('../components/dashboard/verDocumentosUsr/verDocumentosUsr.vue')),
     },
   
     setup() {
@@ -69,7 +68,7 @@ export default defineComponent({
         onMounted( async() =>{                
             $q.loading.hide()
             seccion.value = seccionesUsr.find(sec => Number(sec.id)== idC); 
-            console.log(seccion)
+            //console.log(seccion)
         })
 
         return {      
