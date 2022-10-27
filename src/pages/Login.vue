@@ -39,7 +39,7 @@
               </template>
             </q-input>
             <div>
-              <q-btn class="full-width" color="primary" label="ENTRAR" type="submit" rounded></q-btn>
+              <q-btn class="full-width" color="primary" label="ENTRAR" type="submit" outline></q-btn>
               <div class="text-center q-mt-sm q-gutter-lg">
                 <router-link class="text-black" to="/register">Registrarse</router-link>
               </div>

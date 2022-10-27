@@ -22,10 +22,11 @@
                 <div  v-if="idC===2" name="documentos">
                     <VistaDocmentos></VistaDocmentos>
                 </div>
-                <!-- 
-                <div  v-if="idC===3" name="ingresos">
-                    <TablaIngresos></TablaIngresos>
+                 
+                <div  v-if="idC===3" name="balance">
+                    <VistaBalance></VistaBalance>
                 </div>
+                <!--
                 <div  v-if="idC===4" name="egresos">
                     <TablaEgresos></TablaEgresos>
                 </div>                             -->
@@ -53,6 +54,7 @@ export default defineComponent({
     components: {
         VistaAvisos: defineAsyncComponent(() => import('../components/dashboard/VerAvisosUsr/verAvisosUsr.vue')),
         VistaDocmentos: defineAsyncComponent(() => import('../components/dashboard/verDocumentosUsr/verDocumentosUsr.vue')),
+        VistaBalance: defineAsyncComponent(() => import('../components/dashboard/VerBalance/verBalance.vue')),
     },
   
     setup() {

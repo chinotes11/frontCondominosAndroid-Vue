@@ -26,8 +26,46 @@
         -->
 
         <q-btn stretch flat v-if="isAuthenticated" icon="account_circle">
-          <q-menu>
-            <div class="row no-wrap q-pa-md">
+          <q-menu style="min-width: 400px">
+            <q-list style="min-width: 400px">
+              <q-item clickable>
+                <q-item-section class="caption flex-center q-mt-md q-mb-xs text-weight-bolder">
+                  {{usr}}
+                </q-item-section>
+              </q-item>
+              <q-separator />
+              <q-item >
+                <q-item-section >
+                  <q-btn
+                    icon="real_estate_agent"
+                      color="primary"
+                      label="Perfil Usuario"
+                      push
+                      size="md"
+                      v-close-popup
+                      to="/condominos/Perfil" 
+                      outline
+                    />
+                  </q-item-section>
+              </q-item>
+              <q-item >
+                <q-item-section>
+                  <q-btn
+                  icon="logout"
+                    color="primary"
+                    label="Salir"
+                    push
+                    size="md"
+                    v-close-popup
+                    @click="logout" 
+                    outline
+                  />
+                </q-item-section>
+              </q-item>             
+            
+          </q-list>
+
+            <!-- <div class="row no-wrap q-pa-md">
               <div class="column">
                 <div lines="1" class="text-h6 q-mb-md">Perfil Usuario </div>
                 <q-btn
@@ -58,7 +96,8 @@
                     @click="logout" 
                   />
                 </div>
-            </div>
+            </div> -->
+
           </q-menu>
         </q-btn>
 
@@ -147,6 +186,15 @@ const linksListas = [
       children: []
   },
   {
+      title: 'Balance',
+      caption: 'Balance mensual',
+      icon: 'insights',
+      link: '/condominos/contenedorusr/3/1',
+      tipo:0,
+      level: 0,
+      children: []
+  },  
+  {
       title: 'Flex Layout',
       caption: 'Estilos con Flex',
       icon: 'las la-layer-group',
@@ -171,6 +219,14 @@ const linksListas = [
             level: 1,
             children: []
         }, {
+            title: 'Balances y Reportes',
+            caption: 'Sección para balances y reportes.',
+            icon: 'query_stats',
+            link: '/condominos/balancestabulados',
+            tipo:0,
+            level: 1,
+            children: []
+        },{
             title: ' Conciliar Pagos o Ingresos',
             caption: 'Conciliación de pagos o ingresos.',
             icon: 'payments',

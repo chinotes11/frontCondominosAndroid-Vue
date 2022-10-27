@@ -28,6 +28,7 @@ const routes = [
       { path: '/condominos/avisos', component: () => import('pages/admin/Avisos'), meta: { requireLogin: true } },
       { path: '/condominos/ingresosconciliar', component: () => import('pages/admin/IngresosConciliar'), meta: { requireLogin: true } },
       { path: '/condominos/egresosgastos', component: () => import('pages/admin/EgresosGastos'), meta: { requireLogin: true } },
+      { path: '/condominos/balancestabulados', component: () => import('pages/admin/BalancesTabulados'), meta: { requireLogin: true } },
       
     ]
   },

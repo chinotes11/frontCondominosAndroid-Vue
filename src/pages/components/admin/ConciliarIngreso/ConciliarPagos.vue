@@ -205,21 +205,14 @@
                                   <q-list bordered>
                                     <q-item>
                                       <q-item-section > 
-                                          <span class="text-weight-bold text-h6 flex-right " v-if="domicilio.aprobado==0">
-                                            ESTATUS: <span class="text-negative">CON ADEUDO</span>
+                                          <span class="text-weight-bold text-h6 flex-right ">
+                                            ESTATUS:  <span v-if="domicilio.aprobado==0" class="text-negative">CON ADEUDO</span>
+                                                      <span v-if="domicilio.aprobado==1" class="text-orange-7">PENDIENTE</span> 
+                                                      <span v-if="domicilio.aprobado==2" class="text-purple">ADEUDO PARCIAL</span>
+                                                      <span v-if="domicilio.aprobado==3" class="text-negative">RECHAZADO</span>
+                                                      <span v-if="domicilio.aprobado==4" class="text-positive">PAGADO</span>
                                           </span>
-                                          <span class="text-weight-bold text-h6 flex-right text-blue-grey-8 " v-if="domicilio.aprobado==1 "> 
-                                            ESTATUS:  <span class="text-orange-7">PENDIENTE</span> 
-                                          </span>  
-                                          <span class="text-weight-bold text-h6 flex-right " v-if="domicilio.aprobado==2"> 
-                                            ESTATUS: <span class="text-purple">ADEUDO PARCIAL</span> 
-                                          </span>    
-                                          <span class="text-weight-bold text-h6 flex-right " v-if="domicilio.aprobado==3"> 
-                                            ESTATUS:  <span class="text-negative">RECHAZADO</span>
-                                          </span>   
-                                          <span class="text-weight-bold text-h6 flex-right " v-if="domicilio.aprobado==4"> 
-                                            ESTATUS:  <span class="text-positive">PAGADO</span>
-                                          </span>     
+                                              
                                           <div class="row">
                                             <div class="col-sm-6 col-xs-12 q-pa-sm q-gutter-sm"> 
                                               <q-input
@@ -281,14 +274,68 @@
                                           </q-item-section>                                    
                                       </q-item>
                                   </q-list>
-                                  <q-separator color="primary" /> 
+                                  
+
+                                  <q-list v-if="lstPagos.length > 0" bordered>
+                                      <q-item  >  
+                                          <q-item-section>  
+                                              <q-separator color="primary" />
+                                               <q-table
+                                                  title="Pagos de este concepto"
+                                                  :rows="lstPagos"
+                                                  :columns="colpag"
+                                                  row-key="name"
+                                                >
+                                                  <template v-slot:body="props">
+                                                    <q-tr :props="props"> 
+                                                      <q-td key="edita" :props="props"> 
+                                                         <q-icon name="edit" size="25px" color="teal"  v-if="props.row.hide" outline  @click="props.row.hide=!props.row.hide"  />
+                                                         <q-icon name="cancel" size="25px" color="red"   v-else  @click="props.row.hide=!props.row.hide"  />
+                                                       
+                                                      </q-td>
+                                                      <q-td key="mes" :props="props">
+                                                        <span class="text-subtitle2 text-weight-bolder text" >  {{ arrmeses.find(m => Number(m.id)== Number(props.row.mes)).value.toUpperCase() }}</span>                
+                                                      </q-td>                     
+                                                      <q-td key="anio" :props="props">  
+                                                       <span class="text-subtitle2 text-weight-bolder text" > {{props.row.anio}}  </span> 
+                                                      </q-td>
+                                                      <q-td key="monto" :props="props"> 
+                                                        <q-input
+                                                          style="max-width: 160px; min-width: 160px;"
+                                                          type="number"
+                                                          step="any"
+                                                          outlined
+                                                          prefix="$"
+                                                          v-model="props.row.monto"
+                                                          :modelValue="props.row.monto" 
+                                                          label="MXN"
+                                                          @update:modelValue="val => props.row.monto = Number(val)"
+                                                          :disable="props.row.hide"
+                                                        >
+                                                          <template v-slot:after>
+                                                            <q-btn round dense flat v-if="!props.row.hide" outline icon="save" color="blue"  size="20px" @click="editaDet(props.row)"  />
+                                                          </template>
+                                                        </q-input>
+
+                                                        <!-- <span class="text-subtitle2 text-weight-bolder text" > {{numberFormat2.format(props.row.monto)}} </span>  -->
+                                                         
+                                                      </q-td>
+                                                      
+                                                    </q-tr>
+                                                  </template>
+                                               </q-table>
+                                           </q-item-section>                                    
+                                      </q-item>
+                                  </q-list> 
+                                 <q-separator color="primary" /> 
+                                  
                                   <q-list bordered>
                                       <q-item  class="q-my-sm">  
                                           <q-item-section>  
                                               <q-item-label class="text-h6 text-weight-bold text-teal"> {{ domicilio.categoria }} </q-item-label>
                                               <q-item-label class="text-h6 text-teal">{{ arrmeses.find(mes => Number(mes.id)== Number(domicilio.mes)).value.toUpperCase() }} {{ domicilio.anio }}</q-item-label>
                                               <q-item-label class="text-h6 " > Monto de adeudo:
-                                                <span v-if="domicilio.aprobado==1" > {{ numberFormat2.format(domicilio.montodepago)  }}</span>  
+                                                <span v-if="domicilio.aprobado===1" > {{ numberFormat2.format(domicilio.montodepago)  }}</span>  
                                                 <span v-else> {{ numberFormat2.format(domicilio.pagar)  }}</span> 
                                               </q-item-label>
                                               <q-item-label class="text-h6 " > Monto de pago: <span class="text-weight-bold"> {{ numberFormat2.format(domicilio.zpago)  }}</span> </q-item-label>                                              
@@ -342,7 +389,7 @@
                           <span class="text-subtitle2" v-if="props.row.aprobado==0"> <q-badge color="negative">CON ADEUDO</q-badge> </span>
                           <span class="text-subtitle2" v-if="props.row.aprobado==1 "> <q-badge color="orange-7">PENDIENTE</q-badge> </span>  
                           <span class="text-subtitle2" v-if="props.row.aprobado==2"> <q-badge color="purple">ADEUDO PARCIAL</q-badge> </span>    
-                          <span class="text-subtitle2" v-if="props.row.aprobado==3"> <q-badge color="negative">RECHAZADO</q-badge> </span>   
+                          <span class="text-subtitle2" v-if="props.row.aprobado==3"> <q-badge color="indigo">RECHAZADO</q-badge> </span>   
                           <span class="text-subtitle2" v-if="props.row.aprobado==4"> <q-badge color="positive">PAGADO</q-badge> </span>
                       </q-td> 
                       <q-td key="montoapagar" :props="props">
@@ -363,7 +410,7 @@
                       </q-td>
                       <q-td key="pagar" :props="props">
                         <span class="text-subtitle2 text-weight-bolder text-negative" v-if="props.row.aprobado==0"> {{numberFormat2.format(props.row.pagar)}}</span>
-                          <span class="text-subtitle2 text-weight-bolder text-orange-8" v-if="props.row.aprobado==1 "> {{numberFormat2.format(props.row.montodepago)}}</span>  
+                          <span class="text-subtitle2 text-weight-bolder text-orange-8" v-if="props.row.aprobado==1 "> {{numberFormat2.format(props.row.pagar)}}</span>  
                           <span class="text-subtitle2 text-weight-bolder text-purple" v-if="props.row.aprobado==2"> {{numberFormat2.format(props.row.pagar)}}</span>    
                           <span class="text-subtitle2 text-weight-bolder text-negative" v-if="props.row.aprobado==3"> {{numberFormat2.format(props.row.pagar)}} </span>   
                           <span class="text-subtitle2 text-weight-bolder text-PAGADO" v-if="props.row.aprobado==4"> {{numberFormat2.format(props.row.pagar)}} </span>    
@@ -447,6 +494,14 @@ export default defineComponent({
     let extensionesImg = ['png','jpg','jpeg','gif']
     let extensionesDoc = ['pdf']
     let datos = ref([])
+    let lstPagos  = ref([])
+    let colpag =ref()
+    colpag.value = [
+      {name: "edita", label: "", field: "edita", align: 'left'}, 
+      {name: "mes", label: "Mes Pago", field: "mes", align: 'left', format: val => `${val}`, sortable: true},
+      {name: 'anio', label: 'Año Pago', field: 'anio', align: 'left', format: val => `${val}`, sortable: true}, 
+      {name: "monto", label: "Monto", field: "monto", align: 'left', format: val => `${val}`, sortable: true},       
+    ];
 
     let columnas =ref()
     columnas.value = [
@@ -459,6 +514,9 @@ export default defineComponent({
       {name: "pagar", label: "Adeudo", field: "pagar", align: 'left', format: val => `${val}`, sortable: true},  
       {name: "ruta1", label: "Comprobante", field: "ruta1", align: 'center', sortable: true},  
     ];
+
+    let rows = ref([])
+    let columns = ref([])
 
     let tituloDialg= ref(' CONCILIAR PAGO ')
     let inFullscreen = ref(false)
@@ -501,22 +559,84 @@ export default defineComponent({
     let optionsMI = reactive({ ops: null })  
     let optionsF = reactive({ ops: null })
 
+    const editaDet = async (item) => {  
+        console.log(item)
+        const indiceDet= lstPagos.value.indexOf(item) 
+        let total = lstPagos.value.map((d) => { return d.monto}).reduce((acc, d) => d + acc)
+        let payload = { 
+          montodepago: total,
+          ultimopago: total
+        }  
+        let payloadI = { 
+          monto: item.monto
+        }
+        console.log(domicilio.value, ' -  ',total, '  -  ' ,lstPagos.value)
+        $q.dialog({
+              title: 'Confirmación de modificación de monto.',
+              message: `¿Esta usted seguro de modificar el monto del mes de <b>${arrmeses.find(mes => Number(mes.id)== Number(item.mes)).value.toUpperCase()}</b> 
+                        del año <b>${item.anio} </b> por un monto de <b>${ Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(item.monto)}</b>, 
+                        RECUERDE QUE ESTA MODIFICACIÖN SE REFLEJARA EN EL BALANCE. `,
+              html: true,
+              ok: {
+                push: true,
+                color: 'positive',
+                label: 'ACEPTAR',
+                icon: 'check_circle'
+                
+              },
+              cancel: {
+                push: true,
+                color: 'negative',
+                label: 'REGRESAR',
+                icon: 'cancel'
+              },
+              persistent: true
+            }).onOk( async() => {
+                const pago = await api.put(`api/updates/${item.idingreso}/14`, payload);  
+                const pagoIn = await api.put(`api/updates/${item.id}/26`, payloadI);
+                await Promise.all([pago,pagoIn]).then(async (res) => {
+                  
+                  const ing = res[0].data.data
+                  console.log(ing[0])
+                  lstPagos.value[indiceDet].hide=true
+                  datos.value[domicilioIndex.value].pagar = ing[0].montoapagar - ing[0].montodepago                 
+                  datos.value[domicilioIndex.value].zpago = ing[0].montoapagar - ing[0].montodepago
+                  datos.value[domicilioIndex.value].montodepago = ing[0].montodepago 
+
+                  $q.notify({
+                      position: 'top',
+                      type: 'positive',
+                      message: 'Se ha actualizado el registro correctamente.'
+                  })  
+                }); 
+            }).onCancel(() => {
+            }).onDismiss(() => {                
+            }) 
+    }
+    
 
     const editDom = async (item) => {  
       try {    
           console.log(item , '   -    ' , datos.value.indexOf(item) )
           domicilioIndex.value = datos.value.indexOf(item)          
           domicilio.value=item
-          domicilio.value.zpago=item.montodepago
-          console.log(item, '  -   ', domicilioIndex.value)
+          domicilio.value.zpago=item.aprobado==1? item.montopendiente:item.montoapagar - item.montodepago
+          //
+          console.log(domicilioIndex.value)
+          let payload = { 
+            "idingreso": item.IdIngreso
+          } 
+          const json = await api.post('api/selectsadmin/26', payload);
+          const {data}=json.data
+          data.map((d)=>{d.hide=true;})
+
+          lstPagos.value=data
+          console.log(data)
           show_dialog.value = true
+
       } catch (e) {
-        console.log(e)
-            $q.notify({
-            position: 'top',
-            type: 'negative',
-            message: 'No se ha poddio cargar la información revise su conexión.'
-        }) 
+        show_dialog.value = true
+        lstPagos.value=[]
       }        
     }
 
@@ -552,31 +672,59 @@ export default defineComponent({
     }
 
     const addDom = async (aprobado)=>{
+      let ultimo =  0
+      console.log(domicilio.value.aniopago,'==',Number(moment(new Date(Date.now())).format("YYYY")) ,' -  ',domicilio.value.mespago,'==',Number(moment(new Date(Date.now())).format("M")) )
+      if(domicilio.value.aniopago==Number(moment(new Date(Date.now())).format("YYYY")) && domicilio.value.mespago==Number(moment(new Date(Date.now())).format("M")) ){        
+        ultimo = domicilio.value.zpago + domicilio.value.montodepago
+      } else{
+        ultimo = domicilio.value.zpago
+      }
+      console.log(ultimo)
+
       try {
         if (domicilio.value.IdIngreso) {     
           let payload = { 
-            montodepago:aprobado==3?0:domicilio.value.zpago,
+            montodepago:aprobado==3?0:domicilio.value.montodepago>0?domicilio.value.zpago + domicilio.value.montodepago:domicilio.value.zpago,
             aprobado:aprobado,
             formapago:domicilio.value.formapago,
             idaprobador:sesion.id,
-            aniopago:domicilio.value.formapago?domicilio.value.aniopago:Number(moment(new Date(Date.now())).format("YYYY")),
-            mespago:domicilio.value.formapago?domicilio.value.mespago:Number(moment(new Date(Date.now())).format("M")),
+            montopendiente:0,
+            aniopago:domicilio.value.aniopago?domicilio.value.aniopago:Number(moment(new Date(Date.now())).format("YYYY")),
+            mespago:domicilio.value.mespago?domicilio.value.mespago:Number(moment(new Date(Date.now())).format("M")),
+            ultimopago:aprobado==3?0:ultimo,
           }  
-          console.log(payload, '   -   ', domicilioIndex.value) 
+         console.log(payload, '   -   ', domicilioIndex.value) 
           const pago = await api.put(`api/updates/${domicilio.value.IdIngreso}/14`, payload);        
-          await Promise.all([pago]).then(function (res) {
+          await Promise.all([pago]).then(async (res) => {
               const egr = res[0].data.data
-              datos.value[domicilioIndex.value].pagar=egr[0].montoapagar - egr[0].montodepago
-              datos.value[domicilioIndex.value].montodepago=egr[0].montodepago
-              datos.value[domicilioIndex.value].aprobado=egr[0].aprobado
-              datos.value[domicilioIndex.value].formapago=egr[0].formapago
-              datos.value[domicilioIndex.value].idaprobador=egr[0].idaprobador
-              $q.notify({
-                  position: 'top',
-                  type: 'positive',
-                  message: 'Se ha actualizado el registro correctamente.'
-              })      
-              close()  
+              let payloadI = { 
+                monto:aprobado==3?0:domicilio.value.zpago,
+                anio:Number(moment(new Date(Date.now())).format("YYYY")),
+                mes:Number(moment(new Date(Date.now())).format("M")),
+                idingreso:egr[0].id,
+              } 
+
+              const transaccion = await api.put(`api/inserts/26`, payloadI); 
+              await Promise.all([transaccion]).then(function async (trans) {
+
+                datos.value[domicilioIndex.value].pagar=egr[0].montoapagar - egr[0].montodepago
+                datos.value[domicilioIndex.value].montodepago=egr[0].montodepago
+                datos.value[domicilioIndex.value].aprobado=egr[0].aprobado
+                datos.value[domicilioIndex.value].formapago=egr[0].formapago
+                datos.value[domicilioIndex.value].idaprobador=egr[0].idaprobador
+                datos.value[domicilioIndex.value].mespago=egr[0].mespago
+                datos.value[domicilioIndex.value].aniopago=egr[0].aniopago
+                datos.value[domicilioIndex.value].zpago=egr[0].montoapagar - egr[0].montodepago
+                
+                console.log(datos.value[domicilioIndex.value])
+                $q.notify({
+                    position: 'top',
+                    type: 'positive',
+                    message: 'Se ha actualizado el registro correctamente.'
+                })      
+                close()  
+              }); 
+              
           });          
         }  
       } catch (error) {
@@ -662,7 +810,7 @@ export default defineComponent({
             const json = await api.post('api/selectsadmin/23', payload);
             const {data}=json.data
             datos.value=data            
-            limpiar()
+            //limpiar()
             $q.loading.hide() 
         } catch (e) {
           limpiar()
@@ -780,6 +928,9 @@ export default defineComponent({
         defaultDomicilio,
         editDom,
         confirmaePago,
+        lstPagos,
+        colpag,
+        editaDet,
 
         pagination: { rowsPerPage: 5 },
         options,
@@ -809,6 +960,10 @@ export default defineComponent({
 
 <style scoped>
 
+.zip-input input {
+    height: 150px;
+    width: 200px;
+}
 
 </style>
 

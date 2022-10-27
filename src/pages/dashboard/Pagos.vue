@@ -111,7 +111,7 @@
                                             <span class="text-subtitle2" v-if="props.row.aprobado==0"> <q-badge color="negative"> CON ADEUDO</q-badge> </span>
                                             <span class="text-subtitle2" v-if="props.row.aprobado==1 "> <q-badge color="orange">PENDIENTE DE VALIDAR</q-badge> </span>  
                                             <span class="text-subtitle2" v-if="props.row.aprobado==2"> <q-badge color="purple">ADEUDO PARCIAL</q-badge> </span>    
-                                            <span class="text-subtitle2" v-if="props.row.aprobado==3"> <q-badge color="negative"><q-icon name="warning"></q-icon> RECHAZADO</q-badge> </span>   
+                                            <span class="text-subtitle2" v-if="props.row.aprobado==3"> <q-badge color="indigo"><q-icon name="warning"></q-icon> RECHAZADO</q-badge> </span>   
                                             <span class="text-subtitle2" v-if="props.row.aprobado==4"> <q-badge color="positive">PAGADO</q-badge> </span>
                                         </q-td>                                
                                         <q-td key="montoapagar" :props="props" class="text-subtitle2">{{ numberFormat2.format(props.row.montoapagar)  }}</q-td>
@@ -526,7 +526,9 @@ export default {
                     mespago: Number(moment(new Date(Date.now())).format("M")),
                     aprobado: 1,
                     formapago: 3,
-                    montodepago: sel.zpago
+                    //montodepago: sel.zpago,
+                    montopendiente: sel.zpago,
+                    ultimopago:sel.zpago
                 }  
                 //console.log(`api/updates/${sel.id}/14`, payload)                
                 const docs = await api.put(`api/updates/${sel.id}/14`, payload);       

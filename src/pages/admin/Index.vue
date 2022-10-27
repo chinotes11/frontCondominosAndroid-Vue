@@ -6,7 +6,50 @@
           <br>
           <q-card-section class="q-pa-md row items-start q-gutter-md">
 
+<!--              
             <div v-for="menu in menuAdmin" :key="menu.id" > 
+              <q-card class="my-card bg-white text-gray-7 cardWH" clickable v-ripple @click="go(menu.url)">
+                <q-img src="~assets/pdf.png">
+                  <div class="absolute-bottom">
+                    <div class="text-h4"><q-icon  size="30px" :name="menu.icono" /> {{menu.name}}</div>
+                    <div class="text-subtitle2">{{menu.descripcion}}</div>
+                  </div>
+                </q-img>               
+              </q-card>
+            </div>         -->
+
+            <div v-for="menu in menuAdmin" :key="menu.id" > 
+              <q-card class="my-card bg-white text-gray-7 " clickable v-ripple @click="go(menu.url)">
+                <q-img src="~assets/wave.png" class="cardWH">
+                  <div class="absolute-bottom">
+                    <div class="text-h6"><q-icon size="30px" :name="menu.icono" /> {{menu.name}}</div>
+                  </div>
+                </q-img>   
+                <q-card-section class="bg-primary">
+                  <div class="text-subtitle2 text-white">{{menu.descripcion}}</div>                
+                </q-card-section>       
+              </q-card>
+               
+            </div>
+
+            <!-- <div v-for="menu in menuAdmin" :key="menu.id" > 
+              <q-card class="my-card bg-white text-gray-7 cardWH" clickable v-ripple @click="go(menu.url)">
+                
+                <q-card-section >
+                  <div class="text-h6"><q-icon color="teal" size="30px" :name="menu.icono" /> {{menu.name}} </div>
+                  <div class="text-subtitle2">{{menu.descripcion}}</div>                
+                </q-card-section>
+                <q-separator  />
+                <q-card-actions>
+                  <q-btn class="full-width" outline color="primary" >{{menu.ir}} </q-btn>
+                </q-card-actions>
+               
+              </q-card>
+            </div>
+           -->
+          
+
+            <!-- <div v-for="menu in menuAdmin" :key="menu.id" > 
               <q-card class="my-card bg-white text-gray-7 esqredondaInd" clickable v-ripple @click="go(menu.url)">
                 <q-card-section >
                   <div class="text-h6"><q-icon color="teal" size="30px" :name="menu.icono" /> {{menu.name}} </div>
@@ -17,7 +60,7 @@
                   <q-btn class="full-width" outline color="primary" >{{menu.ir}} </q-btn>
                 </q-card-actions>
               </q-card>
-            </div>
+            </div> -->
           
           </q-card-section>
         </q-card>
@@ -39,7 +82,6 @@ export default {
   //   ...mapGetters('auth', ['getMe'])
   // },
   //
-  
   setup(props) {
     const store = useStore()
     const router = useRouter()

@@ -21,11 +21,11 @@
         </q-card-section><br>
         <q-card-section>
           <div class="text-center q-mt-sm ">
-            <q-btn class="full-width" color="primary"  to="/login" label="Iniciar Sesión" rounded ></q-btn>            
+            <q-btn class="full-width" color="primary"  to="/login" label="Iniciar Sesión" outline ></q-btn>            
           </div> 
           <br>
           <div class="text-center q-mt-sm ">
-            <q-btn class="full-width" color="primary"  to="/register" label="Registrar Usuario" rounded ></q-btn>            
+            <q-btn class="full-width" color="primary"  to="/register" label="Registrar Usuario" outline ></q-btn>            
           </div>             
               
         </q-card-section>

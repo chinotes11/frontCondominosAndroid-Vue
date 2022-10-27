@@ -76,7 +76,7 @@
                       </q-td>
                       <q-td key="actions" :props="props">
                         <q-btn color="blue" label="Editar" @click="editItem(props.row)" size="md" no-caps></q-btn>
-                        <q-btn color="red" label="Borrar"  @click="deleteItem(props.row)" size="md" no-caps></q-btn>
+                        <!-- <q-btn color="red" label="Borrar"  @click="deleteItem(props.row)" size="md" no-caps></q-btn> -->
                       </q-td>
                     </q-tr>
                 </template>

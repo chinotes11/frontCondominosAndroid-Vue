@@ -8,14 +8,14 @@
                         <q-card-section horizontal>        
                             <q-card-section class="q-pt-xs">
                                 <div class="text-h6"> 
-                                <q-icon color="primary" size="30px" name="monetization_on" />  Gastos o Egresos  </div>     
-                                <div class="text-subtitle2">Sección para gestionar los gastos o egresos del condominio.</div>                          
+                                <q-icon color="primary" size="30px" name="query_stats" /> Balances y Reportes </div>     
+                                <div class="text-subtitle2">Sección para balances y reportes informativos.</div>                          
                             </q-card-section>
                         </q-card-section>
                     </q-card>
                 </q-card-section>
             </q-card>  
-            <VistaEgresos></VistaEgresos>  
+            <VistaBalance></VistaBalance>  
         </div>
     </q-page>  
     <q-page-sticky position="top-right" :offset="[20, 1]">
@@ -34,9 +34,9 @@ const options2 = { style: 'currency', currency: 'MXN' };
 
 import {defineComponent, defineAsyncComponent} from 'vue';
 export default defineComponent({
-    name: 'EgresosGastos',
+    name: 'BalanceTabulado',
     components: {
-        VistaEgresos: defineAsyncComponent(() => import('../components/admin/AsignarEgresos/Egresos.vue')),
+        VistaBalance: defineAsyncComponent(() => import('../components/admin/BalanceTabulado/Balancetab.vue')),
     },
   
     setup() {
